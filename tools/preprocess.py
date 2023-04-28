@@ -34,7 +34,7 @@ def cancer_preprocess(df):
         df: result of call to import_cancer()
     
     outputs:
-        None
+        df: modified and cleaned pandas dataframe 
     """
     df['Target_div_Income'] = df['TARGET_deathRate'] / df['medIncome']
     df[['County', 'State']] = df['Geography'].str.extract(r'(.+), (.+)')
@@ -42,6 +42,7 @@ def cancer_preprocess(df):
     df.loc[166, 'County'] = 'Dona Ana County'
     df.loc[820, 'County'] = 'La Salle Parish'
     df['Target_div_LogIncome'] = df['TARGET_deathRate'] / df['medIncome'].apply(lambda x: math.log(x))
+    return df
     
 def merge_data(cancer, fips):
     """
@@ -54,7 +55,7 @@ def merge_data(cancer, fips):
     outputs: 
         pandas DataFrame of FIPS data
     """
-    return pd.merge(cancer, df, left_on=['County'], right_on=['CountyName'], how='left')
+    return pd.merge(cancer, fips, left_on=['County'], right_on=['CountyName'], how='left')
 
 def graph_dataframe(df):
     """
