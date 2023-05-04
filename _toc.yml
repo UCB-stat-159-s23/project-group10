@@ -3,6 +3,6 @@ root: Main
 parts:
 - caption: Analysis Notebooks
   chapters:
-  - file: Data-Preperation
+  - file: Data-Preparation
   - file: Data-Visualization
   - file: Regression-Analysis
