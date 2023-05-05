@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>INTRODUCTION &#8212; Cancer OLS Challenge Project Jupyter Book</title>
   
@@ -44,6 +44,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -65,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Data Preparation" href="Data-Preparation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -152,6 +153,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Data-Preparation.html">Data Preparation</a></li>
 
+<li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Regression-Analysis.html">Regression in Python</a></li>
 </ul>
 
@@ -359,14 +361,14 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction">
-<h1>INTRODUCTION<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h1>
+<h1>INTRODUCTION<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
 <p>The analysis of cancer death rates across the United States plays a crucial role in understanding the factors influencing these rates and developing effective public health strategies to reduce the impact of cancer on communities. In this study, we utilize two datasets: the FIPS dataset containing geographical information of counties, and the Cancer Regression dataset, which provides data on cancer death rates and other associated variables.</p>
 <p>The FIPS dataset comprises of Federal Information Processing Standards (FIPS) codes, county names, state names, and their respective abbreviations. This dataset allows us to filter and analyze data based on specific locations of interest across the country. For instance, we can extract information for Alameda County in California using the STATE_COUNTY column.</p>
 <p>On the other hand, the Cancer Regression dataset provides a comprehensive view of cancer death rates and related variables such as average annual count of cancer cases, average deaths per year, incidence rates, median income, population estimates, and racial demographics, among others. Our team has conducted data exploration and cleaning on this dataset to better understand the variables related to cancer death rates and prepare the data for further analysis.</p>
 <p>In our dataset, there are numerous features and one key label, TARGET_deathRate, which represents the cancer death rate per 100,000 population at risk. As the label has continuous numerical values, this dataset presents a regression problem. The majority of the features in the dataset are numerical, with the exception of ‘binnedInc,’ which is a categorical variable representing the income bracket. We have ensured that there are no missing data in the dataset, enabling us to perform accurate and reliable analyses.</p>
 <p>By investigating these datasets, we aim to identify patterns and trends in cancer death rates and uncover the potential factors that contribute to these rates. The insights gained from this analysis can help inform data-driven policy-making and healthcare initiatives to mitigate the impact of cancer on communities across the United States.</p>
 <section id="purpose-of-analysis">
-<h2>Purpose Of Analysis<a class="headerlink" href="#purpose-of-analysis" title="Permalink to this headline">#</a></h2>
+<h2>Purpose Of Analysis<a class="headerlink" href="#purpose-of-analysis" title="Permalink to this heading">#</a></h2>
 <p>The primary objective of analyzing the provided dataset on cancer-related death rates and socioeconomic indicators is to unveil the critical factors that contribute to the prevalence of cancer fatalities across the United States. Utilizing advanced statistical techniques and machine learning models, we aim to investigate the correlations between various socioeconomic variables and cancer death rates. Our goal is to pinpoint which factor(s) have the most substantial impact on cancer-related mortality rates among different population groups. The analysis will offer valuable insights into the principal determinants of cancer-related death rates, thereby enabling the development of targeted public health initiatives and policies to reduce cancer fatalities and improve the overall well-being of the population.</p>
 </section>
 <div class="toctree-wrapper compound">
