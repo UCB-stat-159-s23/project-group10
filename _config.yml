@@ -8,7 +8,7 @@
 title                       : Cancer OLS Challenge Project Jupyter Book  
 author                      : Danielle Killeen, Didi Duan, Noah Tran, Brandon Rodriguez, Jiayi Qiu
 copyright                   : "2023"  
-logo                        : #something.jpeg 
+#logo                        : #something.jpeg 
 
 execute:
   execute_notebooks: 'off'
