@@ -2,7 +2,7 @@
 ### Group 10：Danielle Killeen, Didi Duan, Noah Tran, Brandon Rodriguez, Jiayi Qiu
 ***
 
-This repository has our team's processes and files to analyze cancer-related death rates and socioeconomic indicators. Our objective is to identify critical factors that contribute to cancer fatalities in the US, using statistical techniques and machine learning models. We want to pinpoint which factors have the most significant impact on cancer death rates among different populations. The insights gained will inform targeted public health initiatives and policies to reduce cancer fatalities and improve well-being. 
+This repository is a comprehensive collection of our team's work on exploring and analyzing the correlation between cancer-related death rates and socioeconomic indicators in the United States. Our main goal is to identify the most critical factors that contribute to cancer fatalities by using advanced statistical techniques and machine learning models. The datasets we use in this repository are cited from the dataset from the public-access data website ([data.world]https://data.world/nrippner/ols-regression-challenge). 
 
 __Binder Link__: 
 
