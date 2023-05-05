@@ -1,0 +1,1340 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Data Preparation &#8212; Cancer OLS Challenge Project Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Data-Preparation';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="Data-Visualization.html" />
+    <link rel="prev" title="INTRODUCTION" href="Main.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="Main.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Cancer OLS Challenge Project Jupyter Book</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="Main.html">
+                    INTRODUCTION
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Analysis Notebooks</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Preparation</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Regression-Analysis.html">Regression in Python</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UCB-stat-159-s23/project-group10" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UCB-stat-159-s23/project-group10/issues/new?title=Issue%20on%20page%20%2FData-Preparation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Data-Preparation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Preparation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Preparation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-and-exploring">Data cleaning and exploring</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation">
+<h1>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">#</a></h1>
+<p>In this part, we outline the data preparation process that we followed for our project. To begin, our team undertook an extensive exploration of the cancer-related dataset for US counties. This process involved analyzing the dataset to gain a better understanding of its structure, format, and content.</p>
+<p>Our dataset was obtained from the data.world website, which aggregated data from various sources, including the American Community Survey (<a class="reference external" href="http://census.gov">census.gov</a>), <a class="reference external" href="http://clinicaltrials.gov">clinicaltrials.gov</a>, and <a class="reference external" href="http://cancer.gov">cancer.gov</a>. We carefully curated and cleaned the dataset to ensure that it was suitable for our analysis. This involved removing any missing or inconsistent data points, standardizing the format of the data, and addressing any potential data quality issues.</p>
+<p>Overall, our data preparation process was a critical step in ensuring the accuracy and validity of our analysis. By carefully selecting and curating our dataset, we were able to generate meaningful insights and recommendations to address the issue of cancer in US counties.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">shapefile</span> <span class="k">as</span> <span class="nn">shp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-cleaning-and-exploring">
+<h1>Data cleaning and exploring<a class="headerlink" href="#data-cleaning-and-exploring" title="Permalink to this headline">#</a></h1>
+<p>Data cleaning and exploration are crucial steps in any data analysis project. In our project, firstly, our team try to enhance the geographic information available for each county in the United States, which required us to start by cleaning the Federal Information Processing Standards (FIPS) dataset.</p>
+<p>To accomplish this, we clean the data set at the beginning. We used the pandas library in Python to read in the FIPS dataset as a pandas dataframe. We specified the file location, the tab separator, and the file encoding. We also set the data types for the columns to be strings to ensure consistency.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fips_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/fips2county.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;infer&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>
+<span class="n">fips_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>StateFIPS</th>
+      <th>CountyFIPS_3</th>
+      <th>CountyName</th>
+      <th>StateName</th>
+      <th>CountyFIPS</th>
+      <th>StateAbbr</th>
+      <th>STATE_COUNTY</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>01</td>
+      <td>001</td>
+      <td>Autauga</td>
+      <td>Alabama</td>
+      <td>01001</td>
+      <td>AL</td>
+      <td>AL | AUTAUGA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>01</td>
+      <td>003</td>
+      <td>Baldwin</td>
+      <td>Alabama</td>
+      <td>01003</td>
+      <td>AL</td>
+      <td>AL | BALDWIN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>01</td>
+      <td>005</td>
+      <td>Barbour</td>
+      <td>Alabama</td>
+      <td>01005</td>
+      <td>AL</td>
+      <td>AL | BARBOUR</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>01</td>
+      <td>007</td>
+      <td>Bibb</td>
+      <td>Alabama</td>
+      <td>01007</td>
+      <td>AL</td>
+      <td>AL | BIBB</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>01</td>
+      <td>009</td>
+      <td>Blount</td>
+      <td>Alabama</td>
+      <td>01009</td>
+      <td>AL</td>
+      <td>AL | BLOUNT</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3138</th>
+      <td>56</td>
+      <td>037</td>
+      <td>Sweetwater</td>
+      <td>Wyoming</td>
+      <td>56037</td>
+      <td>WY</td>
+      <td>WY | SWEETWATER</td>
+    </tr>
+    <tr>
+      <th>3139</th>
+      <td>56</td>
+      <td>039</td>
+      <td>Teton</td>
+      <td>Wyoming</td>
+      <td>56039</td>
+      <td>WY</td>
+      <td>WY | TETON</td>
+    </tr>
+    <tr>
+      <th>3140</th>
+      <td>56</td>
+      <td>041</td>
+      <td>Uinta</td>
+      <td>Wyoming</td>
+      <td>56041</td>
+      <td>WY</td>
+      <td>WY | UINTA</td>
+    </tr>
+    <tr>
+      <th>3141</th>
+      <td>56</td>
+      <td>043</td>
+      <td>Washakie</td>
+      <td>Wyoming</td>
+      <td>56043</td>
+      <td>WY</td>
+      <td>WY | WASHAKIE</td>
+    </tr>
+    <tr>
+      <th>3142</th>
+      <td>56</td>
+      <td>045</td>
+      <td>Weston</td>
+      <td>Wyoming</td>
+      <td>56045</td>
+      <td>WY</td>
+      <td>WY | WESTON</td>
+    </tr>
+  </tbody>
+</table>
+<p>3143 rows × 7 columns</p>
+</div></div></div>
+</div>
+<p>Our team also explored the dataset to gain insights into its structure, format, and contents. This process involved using various pandas dataframe methods to examine the distribution of data across different columns, identify any trends or patterns in the data, and generate visualizations to help understand the relationships between variables.</p>
+<p>To start, we used the describe() method to generate descriptive statistics for the dataset. This allowed us to quickly get an overview of the data, including the number of observations, mean, standard deviation, minimum, and maximum values for each column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fips_df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       StateFIPS CountyFIPS_3  CountyName StateName CountyFIPS StateAbbr  \
+count       3143         3143        3143      3143       3143      3143   
+unique        51          325        1878        51       3143        51   
+top           48          001  Washington     Texas      01001        TX   
+freq         254           49          30       254          1       254   
+
+        STATE_COUNTY  
+count           3143  
+unique          3143  
+top     AL | AUTAUGA  
+freq               1  
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, our team also examined the FIPS dataset to understand the total count of counties in each state and obtain a comprehensive overview of the differences in counties across the country. We printed the subset of the data where the count is greater than one, indicating potential discrepancies between FIPS codes and county names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fips_county</span> <span class="o">=</span> <span class="n">fips_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;StateName&#39;</span><span class="p">,</span> <span class="s1">&#39;StateFIPS&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">fips_county</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;StateName&#39;</span><span class="p">,</span> <span class="s1">&#39;StateFIPS&#39;</span><span class="p">,</span> <span class="s1">&#39;Count&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fips_county</span><span class="p">[</span><span class="n">fips_county</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         StateName StateFIPS  Count
+0          Alabama        01     67
+1           Alaska        02     30
+2          Arizona        04     15
+3         Arkansas        05     75
+4       California        06     58
+5         Colorado        08     64
+6      Connecticut        09      8
+7         Delaware        10      3
+9          Florida        12     67
+10         Georgia        13    159
+11          Hawaii        15      5
+12           Idaho        16     44
+13        Illinois        17    102
+14         Indiana        18     92
+15            Iowa        19     99
+16          Kansas        20    105
+17        Kentucky        21    120
+18       Louisiana        22     64
+19           Maine        23     16
+20        Maryland        24     24
+21   Massachusetts        25     14
+22        Michigan        26     83
+23       Minnesota        27     87
+24     Mississippi        28     82
+25        Missouri        29    115
+26         Montana        30     56
+27        Nebraska        31     93
+28          Nevada        32     17
+29   New Hampshire        33     10
+30      New Jersey        34     21
+31      New Mexico        35     33
+32        New York        36     62
+33  North Carolina        37    100
+34    North Dakota        38     53
+35            Ohio        39     88
+36        Oklahoma        40     77
+37          Oregon        41     36
+38    Pennsylvania        42     67
+39    Rhode Island        44      5
+40  South Carolina        45     46
+41    South Dakota        46     66
+42       Tennessee        47     95
+43           Texas        48    254
+44            Utah        49     29
+45         Vermont        50     14
+46        Virginia        51    133
+47      Washington        53     39
+48   West Virginia        54     55
+49       Wisconsin        55     72
+50         Wyoming        56     23
+</pre></div>
+</div>
+</div>
+</div>
+<p>Moreover, the FIPS dataset can be a useful tool for filtering locations based on specific areas of interest across the country. For example, we can use the condition [‘STATE COUNTY’] == ‘CA | ALAMEDA’ to filter the dataset and view information specifically for Alameda County. Based on the results below, we can see that Alameda has county FIPS of 06001.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alameda_info</span> <span class="o">=</span> <span class="n">fips_df</span><span class="p">[</span><span class="n">fips_df</span><span class="p">[</span><span class="s1">&#39;STATE_COUNTY&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;CA | ALAMEDA&#39;</span><span class="p">]</span>
+<span class="n">alameda_info</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>StateFIPS</th>
+      <th>CountyFIPS_3</th>
+      <th>CountyName</th>
+      <th>StateName</th>
+      <th>CountyFIPS</th>
+      <th>StateAbbr</th>
+      <th>STATE_COUNTY</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>187</th>
+      <td>06</td>
+      <td>001</td>
+      <td>Alameda</td>
+      <td>California</td>
+      <td>06001</td>
+      <td>CA</td>
+      <td>CA | ALAMEDA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Secondly, our team try to explore the Cancer Regression dataset which is to predict cancer death rates based on various demographic and health-related factors for each county in the United States. Our team conducted data exploration and cleaning on this dataset to better understand the variables related to cancer death rates and to prepare the data for further analysis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/cancer_reg.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>
+<span class="n">cancer_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>avgAnnCount</th>
+      <th>avgDeathsPerYear</th>
+      <th>TARGET_deathRate</th>
+      <th>incidenceRate</th>
+      <th>medIncome</th>
+      <th>popEst2015</th>
+      <th>povertyPercent</th>
+      <th>studyPerCap</th>
+      <th>binnedInc</th>
+      <th>MedianAge</th>
+      <th>...</th>
+      <th>PctPrivateCoverageAlone</th>
+      <th>PctEmpPrivCoverage</th>
+      <th>PctPublicCoverage</th>
+      <th>PctPublicCoverageAlone</th>
+      <th>PctWhite</th>
+      <th>PctBlack</th>
+      <th>PctAsian</th>
+      <th>PctOtherRace</th>
+      <th>PctMarriedHouseholds</th>
+      <th>BirthRate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1397.000000</td>
+      <td>469</td>
+      <td>164.9</td>
+      <td>489.800000</td>
+      <td>61898</td>
+      <td>260131</td>
+      <td>11.2</td>
+      <td>499.748204</td>
+      <td>(61494.5, 125635]</td>
+      <td>39.3</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>41.6</td>
+      <td>32.9</td>
+      <td>14.0</td>
+      <td>81.780529</td>
+      <td>2.594728</td>
+      <td>4.821857</td>
+      <td>1.843479</td>
+      <td>52.856076</td>
+      <td>6.118831</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>173.000000</td>
+      <td>70</td>
+      <td>161.3</td>
+      <td>411.600000</td>
+      <td>48127</td>
+      <td>43269</td>
+      <td>18.6</td>
+      <td>23.111234</td>
+      <td>(48021.6, 51046.4]</td>
+      <td>33.0</td>
+      <td>...</td>
+      <td>53.8</td>
+      <td>43.6</td>
+      <td>31.1</td>
+      <td>15.3</td>
+      <td>89.228509</td>
+      <td>0.969102</td>
+      <td>2.246233</td>
+      <td>3.741352</td>
+      <td>45.372500</td>
+      <td>4.333096</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>102.000000</td>
+      <td>50</td>
+      <td>174.7</td>
+      <td>349.700000</td>
+      <td>49348</td>
+      <td>21026</td>
+      <td>14.6</td>
+      <td>47.560164</td>
+      <td>(48021.6, 51046.4]</td>
+      <td>45.0</td>
+      <td>...</td>
+      <td>43.5</td>
+      <td>34.9</td>
+      <td>42.1</td>
+      <td>21.1</td>
+      <td>90.922190</td>
+      <td>0.739673</td>
+      <td>0.465898</td>
+      <td>2.747358</td>
+      <td>54.444868</td>
+      <td>3.729488</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>427.000000</td>
+      <td>202</td>
+      <td>194.8</td>
+      <td>430.400000</td>
+      <td>44243</td>
+      <td>75882</td>
+      <td>17.1</td>
+      <td>342.637253</td>
+      <td>(42724.4, 45201]</td>
+      <td>42.8</td>
+      <td>...</td>
+      <td>40.3</td>
+      <td>35.0</td>
+      <td>45.3</td>
+      <td>25.0</td>
+      <td>91.744686</td>
+      <td>0.782626</td>
+      <td>1.161359</td>
+      <td>1.362643</td>
+      <td>51.021514</td>
+      <td>4.603841</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57.000000</td>
+      <td>26</td>
+      <td>144.4</td>
+      <td>350.100000</td>
+      <td>49955</td>
+      <td>10321</td>
+      <td>12.5</td>
+      <td>0.000000</td>
+      <td>(48021.6, 51046.4]</td>
+      <td>48.3</td>
+      <td>...</td>
+      <td>43.9</td>
+      <td>35.1</td>
+      <td>44.0</td>
+      <td>22.7</td>
+      <td>94.104024</td>
+      <td>0.270192</td>
+      <td>0.665830</td>
+      <td>0.492135</td>
+      <td>54.027460</td>
+      <td>6.796657</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3042</th>
+      <td>1962.667684</td>
+      <td>15</td>
+      <td>149.6</td>
+      <td>453.549422</td>
+      <td>46961</td>
+      <td>6343</td>
+      <td>12.4</td>
+      <td>0.000000</td>
+      <td>(45201, 48021.6]</td>
+      <td>44.2</td>
+      <td>...</td>
+      <td>54.9</td>
+      <td>44.6</td>
+      <td>31.7</td>
+      <td>13.2</td>
+      <td>90.280811</td>
+      <td>3.837754</td>
+      <td>0.327613</td>
+      <td>1.700468</td>
+      <td>51.063830</td>
+      <td>7.773512</td>
+    </tr>
+    <tr>
+      <th>3043</th>
+      <td>1962.667684</td>
+      <td>43</td>
+      <td>150.1</td>
+      <td>453.549422</td>
+      <td>48609</td>
+      <td>37118</td>
+      <td>18.8</td>
+      <td>377.175494</td>
+      <td>(48021.6, 51046.4]</td>
+      <td>30.4</td>
+      <td>...</td>
+      <td>53.3</td>
+      <td>48.6</td>
+      <td>28.8</td>
+      <td>17.7</td>
+      <td>75.706245</td>
+      <td>2.326771</td>
+      <td>4.044920</td>
+      <td>14.130288</td>
+      <td>52.007937</td>
+      <td>8.186470</td>
+    </tr>
+    <tr>
+      <th>3044</th>
+      <td>1962.667684</td>
+      <td>46</td>
+      <td>153.9</td>
+      <td>453.549422</td>
+      <td>51144</td>
+      <td>34536</td>
+      <td>15.0</td>
+      <td>1968.959926</td>
+      <td>(51046.4, 54545.6]</td>
+      <td>30.9</td>
+      <td>...</td>
+      <td>52.6</td>
+      <td>47.8</td>
+      <td>26.6</td>
+      <td>16.8</td>
+      <td>87.961629</td>
+      <td>2.313188</td>
+      <td>1.316472</td>
+      <td>5.680705</td>
+      <td>55.153949</td>
+      <td>7.809192</td>
+    </tr>
+    <tr>
+      <th>3045</th>
+      <td>1962.667684</td>
+      <td>52</td>
+      <td>175.0</td>
+      <td>453.549422</td>
+      <td>50745</td>
+      <td>25609</td>
+      <td>13.3</td>
+      <td>0.000000</td>
+      <td>(48021.6, 51046.4]</td>
+      <td>39.0</td>
+      <td>...</td>
+      <td>56.3</td>
+      <td>49.6</td>
+      <td>29.5</td>
+      <td>14.0</td>
+      <td>92.905681</td>
+      <td>1.176562</td>
+      <td>0.244632</td>
+      <td>2.131790</td>
+      <td>58.484232</td>
+      <td>7.582938</td>
+    </tr>
+    <tr>
+      <th>3046</th>
+      <td>1962.667684</td>
+      <td>48</td>
+      <td>213.6</td>
+      <td>453.549422</td>
+      <td>41193</td>
+      <td>37030</td>
+      <td>13.9</td>
+      <td>0.000000</td>
+      <td>(40362.7, 42724.4]</td>
+      <td>26.2</td>
+      <td>...</td>
+      <td>60.3</td>
+      <td>22.9</td>
+      <td>25.1</td>
+      <td>12.6</td>
+      <td>70.098132</td>
+      <td>16.590100</td>
+      <td>3.177753</td>
+      <td>1.356457</td>
+      <td>56.040242</td>
+      <td>8.981723</td>
+    </tr>
+  </tbody>
+</table>
+<p>3047 rows × 34 columns</p>
+</div></div></div>
+</div>
+<p>We used the describe() method to generate descriptive statistics for the cancer dataset. This allowed us to quickly get an overview of the data, including the number of observations, mean, standard deviation, minimum, and maximum values for each features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cancer_df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        avgAnnCount  avgDeathsPerYear  TARGET_deathRate  incidenceRate  \
+count   3047.000000       3047.000000       3047.000000    3047.000000   
+mean     606.338544        185.965868        178.664063     448.268586   
+std     1416.356223        504.134286         27.751511      54.560733   
+min        6.000000          3.000000         59.700000     201.300000   
+25%       76.000000         28.000000        161.200000     420.300000   
+50%      171.000000         61.000000        178.100000     453.549422   
+75%      518.000000        149.000000        195.200000     480.850000   
+max    38150.000000      14010.000000        362.800000    1206.900000   
+
+           medIncome    popEst2015  povertyPercent  studyPerCap    MedianAge  \
+count    3047.000000  3.047000e+03     3047.000000  3047.000000  3047.000000   
+mean    47063.281917  1.026374e+05       16.878175   155.399415    45.272333   
+std     12040.090836  3.290592e+05        6.409087   529.628366    45.304480   
+min     22640.000000  8.270000e+02        3.200000     0.000000    22.300000   
+25%     38882.500000  1.168400e+04       12.150000     0.000000    37.700000   
+50%     45207.000000  2.664300e+04       15.900000     0.000000    41.000000   
+75%     52492.000000  6.867100e+04       20.400000    83.650776    44.000000   
+max    125635.000000  1.017029e+07       47.400000  9762.308998   624.000000   
+
+       MedianAgeMale  ...  PctPrivateCoverageAlone  PctEmpPrivCoverage  \
+count    3047.000000  ...              2438.000000         3047.000000   
+mean       39.570725  ...                48.453774           41.196324   
+std         5.226017  ...                10.083006            9.447687   
+min        22.400000  ...                15.700000           13.500000   
+25%        36.350000  ...                41.000000           34.500000   
+50%        39.600000  ...                48.700000           41.100000   
+75%        42.500000  ...                55.600000           47.700000   
+max        64.700000  ...                78.900000           70.700000   
+
+       PctPublicCoverage  PctPublicCoverageAlone     PctWhite     PctBlack  \
+count        3047.000000             3047.000000  3047.000000  3047.000000   
+mean           36.252642               19.240072    83.645286     9.107978   
+std             7.841741                6.113041    16.380025    14.534538   
+min            11.200000                2.600000    10.199155     0.000000   
+25%            30.900000               14.850000    77.296180     0.620675   
+50%            36.300000               18.800000    90.059774     2.247576   
+75%            41.550000               23.100000    95.451693    10.509732   
+max            65.100000               46.600000   100.000000    85.947799   
+
+          PctAsian  PctOtherRace  PctMarriedHouseholds    BirthRate  
+count  3047.000000   3047.000000           3047.000000  3047.000000  
+mean      1.253965      1.983523             51.243872     5.640306  
+std       2.610276      3.517710              6.572814     1.985816  
+min       0.000000      0.000000             22.992490     0.000000  
+25%       0.254199      0.295172             47.763063     4.521419  
+50%       0.549812      0.826185             51.669941     5.381478  
+75%       1.221037      2.177960             55.395132     6.493677  
+max      42.619425     41.930251             78.075397    21.326165  
+
+[8 rows x 32 columns]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use the two scatter plots to show the relationship between incidence rate and target death rate, as well as incidence rate and median income. The first scatter plot suggests a positive correlation between incidence rate and target death rate, as higher incidence rates tend to be associated with higher target death rates. The second scatter plot suggests not clear correlation between incidence rate and median income. Based on these results, it appears that the incidence rate and target death rate are more closely related features than incidence rate and medincome.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># plot incidenceRate vs TARGET_deathRate</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;incidenceRate&#39;</span><span class="p">],</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Incidence Rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Relationship between Incidence Rate and TARGET_deathRate&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot incidenceRate vs medIncome</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;incidenceRate&#39;</span><span class="p">],</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;medIncome&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Incidence Rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Median Income&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Relationship between Incidence Rate and Median Income&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/25450e6e9232542ff8acfc163e0ed7859b8aa2437ebfd5b730a98480ed2fc805.png" src="_images/25450e6e9232542ff8acfc163e0ed7859b8aa2437ebfd5b730a98480ed2fc805.png" />
+</div>
+</div>
+<p>To prepare for our later visualizations and model analysis, our team wrote a series of code below to clean and transform the cancer-related dataset for US counties.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add a new column &#39;Target_div_Income&#39;</span>
+<span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;Target_div_Income&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;medIncome&#39;</span><span class="p">]</span>
+
+<span class="c1"># extract state and county from &#39;Geography&#39; column and create new columns</span>
+<span class="n">cancer_df</span><span class="p">[[</span><span class="s1">&#39;County&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;Geography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.+), (.+)&#39;</span><span class="p">)</span>
+<span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;County&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;County&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; County&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<span class="c1"># manually change two county names</span>
+<span class="n">cancer_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">166</span><span class="p">,</span> <span class="s1">&#39;County&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Dona Ana County&#39;</span>
+<span class="n">cancer_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">820</span><span class="p">,</span> <span class="s1">&#39;County&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;La Salle Parish&#39;</span>
+
+<span class="c1"># merge the dataframes to get the FIPS codes</span>
+<span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">,</span> <span class="n">fips_df</span><span class="p">,</span>
+                     <span class="n">left_on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;County&#39;</span><span class="p">],</span> <span class="n">right_on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CountyName&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="c1"># add a new column &#39;Target_div_LogIncome&#39;</span>
+<span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;Target_div_LogIncome&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">]</span> <span class="o">/</span> \
+                                    <span class="p">(</span><span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;medIncome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+<span class="n">cancer_df</span>
+<span class="c1"># create a new dataframe for graphdata with columns &#39;fips&#39; and &#39;values&#39;</span>
+<span class="n">graphdata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;CountyFIPS&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;Target_div_LogIncome&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;CountyFIPS&#39;</span><span class="p">:</span> <span class="n">cancer_df</span><span class="p">[</span><span class="s1">&#39;CountyFIPS&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new dataframe newbieLOG with column &#39;anomalies&#39;</span>
+<span class="n">newbieLOG</span> <span class="o">=</span> <span class="n">graphdata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;anomalies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;anomalies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;anomalies&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">newbieLOG</span><span class="p">[</span><span class="s1">&#39;anomalies&#39;</span><span class="p">]),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">newbieLOG</span> <span class="o">=</span> <span class="n">newbieLOG</span><span class="p">[[</span><span class="s1">&#39;fips&#39;</span><span class="p">,</span> <span class="s1">&#39;anomalies&#39;</span><span class="p">]]</span>
+<span class="n">newbieLOG</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fips</th>
+      <th>anomalies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>53035</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>53037</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>53039</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>16061</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>21135</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>14223</th>
+      <td>48159</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14224</th>
+      <td>50011</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14225</th>
+      <td>51067</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14226</th>
+      <td>53021</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14227</th>
+      <td>20061</td>
+      <td>1.140201</td>
+    </tr>
+  </tbody>
+</table>
+<p>14228 rows × 2 columns</p>
+</div></div></div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Main.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">INTRODUCTION</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Data-Visualization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Preparation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-and-exploring">Data cleaning and exploring</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Danielle Killeen, Didi Duan, Noah Tran, Brandon Rodriguez, Jiayi Qiu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

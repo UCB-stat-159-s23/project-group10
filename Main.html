@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>&lt;no title&gt; &#8212; Cancer OLS Challenge Project Jupyter Book</title>
+    <title>INTRODUCTION &#8212; Cancer OLS Challenge Project Jupyter Book</title>
   
   
   
@@ -63,7 +63,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Main';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="Data-Preperation.html" />
+    <link rel="next" title="Data Preparation" href="Data-Preparation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -144,11 +144,17 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    <no title>
+                    INTRODUCTION
                 </a>
             </li>
         </ul>
-        
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Analysis Notebooks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Data-Preparation.html">Data Preparation</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Regression-Analysis.html">Regression in Python</a></li>
+</ul>
+
     </div>
 </nav></div>
     </div>
@@ -330,11 +336,19 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>INTRODUCTION</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose-of-analysis">Purpose Of Analysis</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -344,15 +358,20 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rpy2</span>
-</pre></div>
-</div>
-</div>
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction">
+<h1>INTRODUCTION<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h1>
+<p>The analysis of cancer death rates across the United States plays a crucial role in understanding the factors influencing these rates and developing effective public health strategies to reduce the impact of cancer on communities. In this study, we utilize two datasets: the FIPS dataset containing geographical information of counties, and the Cancer Regression dataset, which provides data on cancer death rates and other associated variables.</p>
+<p>The FIPS dataset comprises of Federal Information Processing Standards (FIPS) codes, county names, state names, and their respective abbreviations. This dataset allows us to filter and analyze data based on specific locations of interest across the country. For instance, we can extract information for Alameda County in California using the STATE_COUNTY column.</p>
+<p>On the other hand, the Cancer Regression dataset provides a comprehensive view of cancer death rates and related variables such as average annual count of cancer cases, average deaths per year, incidence rates, median income, population estimates, and racial demographics, among others. Our team has conducted data exploration and cleaning on this dataset to better understand the variables related to cancer death rates and prepare the data for further analysis.</p>
+<p>In our dataset, there are numerous features and one key label, TARGET_deathRate, which represents the cancer death rate per 100,000 population at risk. As the label has continuous numerical values, this dataset presents a regression problem. The majority of the features in the dataset are numerical, with the exception of ‘binnedInc,’ which is a categorical variable representing the income bracket. We have ensured that there are no missing data in the dataset, enabling us to perform accurate and reliable analyses.</p>
+<p>By investigating these datasets, we aim to identify patterns and trends in cancer death rates and uncover the potential factors that contribute to these rates. The insights gained from this analysis can help inform data-driven policy-making and healthcare initiatives to mitigate the impact of cancer on communities across the United States.</p>
+<section id="purpose-of-analysis">
+<h2>Purpose Of Analysis<a class="headerlink" href="#purpose-of-analysis" title="Permalink to this headline">#</a></h2>
+<p>The primary objective of analyzing the provided dataset on cancer-related death rates and socioeconomic indicators is to unveil the critical factors that contribute to the prevalence of cancer fatalities across the United States. Utilizing advanced statistical techniques and machine learning models, we aim to investigate the correlations between various socioeconomic variables and cancer death rates. Our goal is to pinpoint which factor(s) have the most substantial impact on cancer-related mortality rates among different population groups. The analysis will offer valuable insights into the principal determinants of cancer-related death rates, thereby enabling the development of targeted public health initiatives and policies to reduce cancer fatalities and improve the overall well-being of the population.</p>
+</section>
 <div class="toctree-wrapper compound">
 </div>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -386,11 +405,11 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="right-next"
-       href="Data-Preperation.html"
+       href="Data-Preparation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">Data Preparation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -403,6 +422,20 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose-of-analysis">Purpose Of Analysis</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
