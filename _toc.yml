@@ -5,4 +5,4 @@ parts:
   chapters:
   - file: Data-Preparation
   - file: Data-Visualization
-  - file: Regression-Analysis
+  - file: Regression-AnalysisV2
