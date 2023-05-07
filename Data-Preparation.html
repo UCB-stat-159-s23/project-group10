@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Data Preparation &#8212; Cancer OLS Challenge Project Jupyter Book</title>
   
@@ -44,6 +44,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -52,6 +53,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
@@ -63,10 +65,10 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Data-Preparation';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="Data-Visualization.html" />
+    <link rel="next" title="Data Visualization" href="Data-Visualization.html" />
     <link rel="prev" title="INTRODUCTION" href="Main.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -153,6 +155,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Preparation</a></li>
 
+<li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Regression-Analysis.html">Regression in Python</a></li>
 </ul>
 
@@ -362,7 +365,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-preparation">
-<h1>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">#</a></h1>
+<h1>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this heading">#</a></h1>
 <p>In this part, we outline the data preparation process that we followed for our project. To begin, our team undertook an extensive exploration of the cancer-related dataset for US counties. This process involved analyzing the dataset to gain a better understanding of its structure, format, and content.</p>
 <p>Our dataset was obtained from the data.world website, which aggregated data from various sources, including the American Community Survey (<a class="reference external" href="http://census.gov">census.gov</a>), <a class="reference external" href="http://clinicaltrials.gov">clinicaltrials.gov</a>, and <a class="reference external" href="http://cancer.gov">cancer.gov</a>. We carefully curated and cleaned the dataset to ensure that it was suitable for our analysis. This involved removing any missing or inconsistent data points, standardizing the format of the data, and addressing any potential data quality issues.</p>
 <p>Overall, our data preparation process was a critical step in ensuring the accuracy and validity of our analysis. By carefully selecting and curating our dataset, we were able to generate meaningful insights and recommendations to address the issue of cancer in US counties.</p>
@@ -382,7 +385,7 @@ document.write(`
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="data-cleaning-and-exploring">
-<h1>Data cleaning and exploring<a class="headerlink" href="#data-cleaning-and-exploring" title="Permalink to this headline">#</a></h1>
+<h1>Data cleaning and exploring<a class="headerlink" href="#data-cleaning-and-exploring" title="Permalink to this heading">#</a></h1>
 <p>Data cleaning and exploration are crucial steps in any data analysis project. In our project, firstly, our team try to enhance the geographic information available for each county in the United States, which required us to start by cleaning the Federal Information Processing Standards (FIPS) dataset.</p>
 <p>To accomplish this, we clean the data set at the beginning. We used the pandas library in Python to read in the FIPS dataset as a pandas dataframe. We specified the file location, the tab separator, and the file encoding. We also set the data types for the columns to be strings to ensure consistency.</p>
 <div class="cell docutils container">
@@ -1259,7 +1262,7 @@ max      42.619425     41.930251             78.075397    21.326165
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">Data Visualization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Regression in Python &#8212; Cancer OLS Challenge Project Jupyter Book</title>
   
@@ -44,6 +44,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -52,6 +53,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
@@ -64,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -151,6 +153,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Data-Preparation.html">Data Preparation</a></li>
 
+<li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Regression-Analysis.html">Regression in Python</a></li>
 </ul>
 
@@ -322,7 +325,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -338,6 +343,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regression in Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bootstrapping">bootstrapping</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -348,7 +363,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="regression-in-python">
-<h1>Regression in Python<a class="headerlink" href="#regression-in-python" title="Permalink to this headline">#</a></h1>
+<h1>Regression in Python<a class="headerlink" href="#regression-in-python" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -608,7 +623,7 @@ Dep. Variable:       TARGET_deathRate   R-squared:                       0.240
 Model:                            OLS   Adj. R-squared:                  0.239
 Method:                 Least Squares   F-statistic:                     240.4
 Date:                Thu, 04 May 2023   Prob (F-statistic):          1.39e-179
-Time:                        04:45:40   Log-Likelihood:                -14031.
+Time:                        18:38:58   Log-Likelihood:                -14031.
 No. Observations:                3047   AIC:                         2.807e+04
 Df Residuals:                    3042   BIC:                         2.810e+04
 Df Model:                           4                                         
@@ -984,7 +999,7 @@ Dep. Variable:       TARGET_deathRate   R-squared:                       0.267
 Model:                            OLS   Adj. R-squared:                  0.266
 Method:                 Least Squares   F-statistic:                     221.6
 Date:                Thu, 04 May 2023   Prob (F-statistic):          4.65e-202
-Time:                        04:45:40   Log-Likelihood:                -13976.
+Time:                        18:38:59   Log-Likelihood:                -13976.
 No. Observations:                3047   AIC:                         2.796e+04
 Df Residuals:                    3041   BIC:                         2.800e+04
 Df Model:                           5                                         
@@ -1040,11 +1055,75 @@ Notes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.00000000e+00,  6.18181993e-01,  6.51711241e-04,  4.98726850e-01,
-       -1.89012910e-01,  1.07662463e+01,  3.04999629e-01,  6.05695117e-01,
-        5.43496705e-01])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 6.18181993e-01,  6.51711241e-04,  4.98726850e-01, -1.89012910e-01,
+        1.07662463e+01,  3.04999629e-01,  6.05695117e-01,  5.43496705e-01])
 </pre></div>
 </div>
+</div>
+</div>
+</section>
+<section id="bootstrapping">
+<h1>bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a function to calculate the coefficients using the bootstrap</span>
+<span class="k">def</span> <span class="nf">bootstrap_model</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">data_boot</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_boot</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">povertyPercent</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">PctHS18_24</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">isSoutheast</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">PctPublicCoverage</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">PctPublicCoverageAlone</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">PctUnemployed16_Over</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">bootparams</span> <span class="o">=</span> <span class="n">bootstrap_model</span><span class="p">(</span><span class="n">imputed_new</span><span class="p">)</span>
+    <span class="n">povertyPercent</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">PctHS18_24</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">isSoutheast</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+    <span class="n">PctPublicCoverage</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+    <span class="n">PctPublicCoverageAlone</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span>
+    <span class="n">PctUnemployed16_Over</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">5</span><span class="p">]]</span>
+    
+<span class="n">orig_params</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#make df of results</span>
+
+<span class="n">bootdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">:</span> <span class="n">povertyPercent</span><span class="p">,</span>
+                       <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">:</span> <span class="n">PctHS18_24</span><span class="p">,</span>
+                       <span class="s1">&#39;isSoutheast&#39;</span><span class="p">:</span> <span class="n">isSoutheast</span><span class="p">,</span>
+                       <span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">:</span> <span class="n">PctPublicCoverage</span><span class="p">,</span>
+                       <span class="s1">&#39;PctPublicCoverageAlone&#39;</span><span class="p">:</span> <span class="n">PctPublicCoverageAlone</span><span class="p">,</span>
+                       <span class="s1">&#39;PctUnemployed16_Over&#39;</span><span class="p">:</span> <span class="n">PctUnemployed16_Over</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot SBS hists of vars in df</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">97.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">orig_params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bootdf</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/247b342c230c86a520b6168201ac1c3b330d86b8d9f212a05f71c03d7d5574a0.png" src="_images/247b342c230c86a520b6168201ac1c3b330d86b8d9f212a05f71c03d7d5574a0.png" />
 </div>
 </div>
 </section>
@@ -1089,6 +1168,22 @@ Notes:
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regression in Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bootstrapping">bootstrapping</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
