@@ -25,9 +25,13 @@ def test_vargroup():
     assert vi.get_variable_group('kajhsdjdh') == 'Other'
 
 def test_anomap():
-    fig = vi.anomaly_map()
+    fig = vi.anomaly_map(plotdf)
     assert fig is not None
     
+def test_dfrace():
+    df = vi.df_race(cancer)
+    assert df is not None
+    
 def test_multiplot():
-    fig = vi.race_income_plot()
+    fig = vi.race_income_plot(vi.df_race(cancer))
     assert fig is not None
