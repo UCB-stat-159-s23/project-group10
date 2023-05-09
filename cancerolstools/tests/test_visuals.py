@@ -27,3 +27,7 @@ def test_vargroup():
 def test_anomap():
     fig = vi.anomaly_map()
     assert fig is not None
+    
+def test_multiplot():
+    fig = vi.race_income_plot()
+    assert fig is not None
