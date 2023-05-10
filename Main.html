@@ -354,6 +354,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose-of-analysis">Purpose Of Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-visualization">Data Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-analysis">Regression Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author-contributions">Author Contributions</a></li>
 </ul>
             </nav>
         </div>
@@ -375,6 +379,35 @@ document.write(`
 <section id="purpose-of-analysis">
 <h2>Purpose Of Analysis<a class="headerlink" href="#purpose-of-analysis" title="Permalink to this heading">#</a></h2>
 <p>The primary objective of analyzing the provided dataset on cancer-related death rates and socioeconomic indicators is to unveil the critical factors that contribute to the prevalence of cancer fatalities across the United States. Utilizing advanced statistical techniques and machine learning models, we aim to investigate the correlations between various socioeconomic variables and cancer death rates. Our goal is to pinpoint which factor(s) have the most substantial impact on cancer-related mortality rates among different population groups. The analysis will offer valuable insights into the principal determinants of cancer-related death rates, thereby enabling the development of targeted public health initiatives and policies to reduce cancer fatalities and improve the overall well-being of the population.</p>
+</section>
+<section id="data-visualization">
+<h2>Data Visualization<a class="headerlink" href="#data-visualization" title="Permalink to this heading">#</a></h2>
+<p>In our analysis, we initially explored the ratio between average cancer mortality and median income per capita in each county. This involved applying a log transformation to the median income and calculating the ratios. Anomalies were identified by standardizing the ratio values, resulting in a new variable called “Anomalies” representing the standard deviations from the mean ratio. Anomalies less than |1| were considered not significant and set to 0. The results were compiled into a dataframe.</p>
+<p>We focused on positive anomalies, indicating a high cancer mortality compared to median income. The graph revealed that most positive anomalies were concentrated in the South-East region, suggesting a possible region-wide trend. We proposed analyzing the impact of a dummy variable for the South-East region on average cancer mortality to assess if it is a significant factor. If it proves significant, it could justify additional federal spending in that area. Furthermore, a significant dummy variable would support the relationship between median income and average cancer mortality. It is important to note that the visualization considers the ratio between cancer mortality and median income, not just cancer mortality alone.</p>
+<p><img alt="image" src="_images/Anomaly_Map.png" /></p>
+<p>Additionally, we explored the relationship between race, income, and cancer mortality using a faceted plot. This plot displayed county-level racial distribution percentages, median income ranges, and the impact on annual average cancer mortality. The plot indicated that income and racial demographics should be considered as features, and the effect of income on mortality varies by race. This suggests the need to address multicollinearity and account for regional and subpopulation differences in our model construction and interpretation.</p>
+<p><img alt="image" src="_images/Race_Income_Plot.png" /></p>
+<p>Overall, our analysis highlights the complex and non-linear relationships between racial percentages, income, and cancer mortality. Linear modeling and appropriate methods will be explored in subsequent analyses to better understand these relationships.</p>
+</section>
+<section id="regression-analysis">
+<h2>Regression Analysis<a class="headerlink" href="#regression-analysis" title="Permalink to this heading">#</a></h2>
+<p>The project then runs a regression analysis for predicting cancer mortality rates. The analysis involves preprocessing the data, selecting variables based on domain knowledge and literature review, and fitting an ordinary least squares (OLS) regression model.</p>
+<p>The preprocessing step involves cleaning the data and converting state names to integers using the cancerolstools preprocess module. The missing values in certain variables are imputed using the Multiple Imputation by Chained Equations (MICE) technique.</p>
+<p>The initial variable selection for the regression model is informed by domain knowledge and insights from the prior visualizations. Variables such as povertyPercent, PctBlack, PctNoHS18_24, and PctHS18_24 are chosen based on their importance in cancer mortality.</p>
+<p>The regression model is fitted using the OLS method from the statsmodels library. The initial model has a low R-squared value of 0.24, indicating weak explanatory power.</p>
+<p>To improve the model, a categorical variable “isSoutheast” is created to indicate whether a county is in the Southeast region. The regions are defined based on the Bureau of Economic Analysis classification. ANOVA is used to test the significance of this categorical variable in the regression.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
+<p>The initial regression analysis provides insights into the relationships between socioeconomic factors and cancer mortality rates. Further refinement and analysis are needed to develop a more robust and accurate predictive model.</p>
+</section>
+<section id="author-contributions">
+<h2>Author Contributions<a class="headerlink" href="#author-contributions" title="Permalink to this heading">#</a></h2>
+<p><strong>Brandon Rodriguez</strong>: Provided written material and figure ideas for Data Exploration, Data Visualization, and the Regression Analysis. Wrote the Introduction and Purpose of Analysis in the <code class="docutils literal notranslate"><span class="pre">Main.ipynb</span></code>. Decided which regression models to use and analyzed each model.</p>
+<p><strong>Noah Tran</strong>: Created <code class="docutils literal notranslate"><span class="pre">Regression-Analysis.ipynb</span></code> and the canceroltools utility functions and test suite (<code class="docutils literal notranslate"><span class="pre">ols.py</span></code>, <code class="docutils literal notranslate"><span class="pre">preprocess.py</span></code>, and <code class="docutils literal notranslate"><span class="pre">visuals.py</span></code>). Helped chose regression models and convert code for all regressions to be compatible in the notebooks.</p>
+<p><strong>Danielle Killeen</strong>: Created <code class="docutils literal notranslate"><span class="pre">Data-Visualization.ipynb</span></code> and converted code for all visualizations to be compatible in notebooks, created and the <code class="docutils literal notranslate"><span class="pre">_toc.yml</span></code>, <code class="docutils literal notranslate"><span class="pre">_config.yml</span></code>, and <code class="docutils literal notranslate"><span class="pre">book.yml</span></code> to build and continuously integrate the jupyter book. Also helped to summarize all of the information of the analyis notebooks into <code class="docutils literal notranslate"><span class="pre">Main.ipynb</span></code>.</p>
+<p><strong>Didi Duan</strong>: Created <code class="docutils literal notranslate"><span class="pre">Data-Preparation.ipynb</span></code>; provided written material for analysis of the data pre processing. Wrote the <code class="docutils literal notranslate"><span class="pre">environemnt.yml</span></code> and created the binder link for the repo.</p>
+<p><strong>Jiayi Qiu</strong>: Created the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and helped move text to make sense in <code class="docutils literal notranslate"><span class="pre">Main.ipynb</span></code>.</p>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -439,6 +472,10 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose-of-analysis">Purpose Of Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-visualization">Data Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-analysis">Regression Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author-contributions">Author Contributions</a></li>
 </ul>
   </nav></div>
 
