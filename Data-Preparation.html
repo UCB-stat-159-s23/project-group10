@@ -1095,51 +1095,31 @@ max      42.619425     41.930251             78.075397    21.326165
 </div>
 </div>
 <p>To prepare for our later visualizations and model analysis, our team wrote a series of code below to clean and transform the cancer-related dataset for US counties.</p>
+<p>The primary steps are:</p>
+<ul class="simple">
+<li><p>Adding a new column that divides the death rate by the income of a county.</p></li>
+<li><p>Extracting state and county from “Geography” column and create new columns for these values.</p></li>
+<li><p>Manually changing 2 county names that are imported with odd characters.</p></li>
+<li><p>Merge cancer and fips data</p></li>
+<li><p>Add a new column that divides the death rate by the log income</p></li>
+<li><p>Create a new dataframe that preserves only the FIPS code and the death rate divided by Log income for conveniences in plotting.</p></li>
+</ul>
+<p>All of these processes are implemented within the preprocess module of the cancerolstools package. In particular, <code class="docutils literal notranslate"><span class="pre">cancer_preprocess</span></code> will perform cancer-only modifications listed above while <code class="docutils literal notranslate"><span class="pre">merge_data</span></code> will merge a modified or unmodified cancer dataset with the fips dataset. For details on the implementation, the package codes are available in the repository.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">cancer_preprocess</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
 <span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">merge_data</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">,</span> <span class="n">fips_df</span><span class="p">)</span>
 
 <span class="n">graphdata</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">graph_dataframe</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
-
-<span class="c1"># # add a new column &#39;Target_div_Income&#39;</span>
-<span class="c1"># cancer_df[&#39;Target_div_Income&#39;] = cancer_df[&#39;TARGET_deathRate&#39;] / cancer_df[&#39;medIncome&#39;]</span>
-
-<span class="c1"># # extract state and county from &#39;Geography&#39; column and create new columns</span>
-<span class="c1"># cancer_df[[&#39;County&#39;, &#39;State&#39;]] = cancer_df[&#39;Geography&#39;].str.extract(r&#39;(.+), (.+)&#39;)</span>
-<span class="c1"># cancer_df[&#39;County&#39;] = cancer_df[&#39;County&#39;].str.replace(&#39; County&#39;, &#39;&#39;)</span>
-
-<span class="c1"># # manually change two county names</span>
-<span class="c1"># cancer_df.loc[166, &#39;County&#39;] = &#39;Dona Ana County&#39;</span>
-<span class="c1"># cancer_df.loc[820, &#39;County&#39;] = &#39;La Salle Parish&#39;</span>
-
-<span class="c1"># # merge the dataframes to get the FIPS codes</span>
-<span class="c1"># cancer_df = pd.merge(cancer_df, fips_df,</span>
-<span class="c1">#                      left_on=[&#39;County&#39;], right_on=[&#39;CountyName&#39;], how=&#39;left&#39;)</span>
-
-<span class="c1"># # add a new column &#39;Target_div_LogIncome&#39;</span>
-<span class="c1"># cancer_df[&#39;Target_div_LogIncome&#39;] = cancer_df[&#39;TARGET_deathRate&#39;] / \</span>
-<span class="c1">#                                     (cancer_df[&#39;medIncome&#39;].apply(lambda x: math.log(x)))</span>
-
-<span class="c1"># cancer_df</span>
-<span class="c1"># # create a new dataframe for graphdata with columns &#39;fips&#39; and &#39;values&#39;</span>
-<span class="c1"># graphdata = pd.DataFrame({&#39;fips&#39;: cancer_df[&#39;CountyFIPS&#39;],</span>
-<span class="c1">#                           &#39;values&#39;: cancer_df[&#39;Target_div_LogIncome&#39;],</span>
-<span class="c1">#                           &#39;CountyFIPS&#39;: cancer_df[&#39;CountyFIPS&#39;]})</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>We additionally create another dataframe, <code class="docutils literal notranslate"><span class="pre">data_with_anomalies</span></code>, that will aid in visualizing the particular spread across the different counties of the United States.</p>
+<p>To help symmetrize median income and thus our ratio, we first applied a log transformation, then calculated our ratios. Then, to identify any anomalies, that is, counties with an unusually high or small ratio, we standardized our ratio values, creating a new variable called “Anomalies,” representing the standard deviations away from the mean ratio. Finally, to focus on significant differences to the mean ratio, we changed any anomalies less than |1| to 0. The above code completes this processing and compiles the results in a dataframe with anomalies. For specific documentation and implementation, please visit the cancerolstools package.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # create a new dataframe newbieLOG with column &#39;anomalies&#39;</span>
-<span class="c1"># newbieLOG = graphdata.copy()</span>
-<span class="c1"># newbieLOG[&#39;anomalies&#39;] = (newbieLOG[&#39;values&#39;] - newbieLOG[&#39;values&#39;].mean()) / newbieLOG[&#39;values&#39;].std()</span>
-<span class="c1"># newbieLOG[&#39;anomalies&#39;] = np.where((newbieLOG[&#39;anomalies&#39;]) &gt; 1, (newbieLOG[&#39;anomalies&#39;]), 0)</span>
-<span class="c1"># newbieLOG = newbieLOG[[&#39;fips&#39;, &#39;anomalies&#39;]]</span>
-<span class="c1"># newbieLOG</span>
-
-<span class="n">data_with_anomalies</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">graph_dataframe</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_with_anomalies</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">graph_dataframe</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
 <span class="n">data_with_anomalies</span>
 </pre></div>
 </div>
