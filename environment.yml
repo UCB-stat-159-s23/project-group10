@@ -5,11 +5,16 @@ channels:
   - defaults
 
 dependencies:
-  - python
-  - numpy
-  - h5py
-  - matplotlib
+  - python==3.10
+  - numpy==1.23
+  - matplotlib==3.6
   - ipython
   - ipykernel
   - decorator
-  - scipy
+  - scipy==1.10
+  - pandas==1.5
+  - plotly==5.12
+  - seaborn==0.12
+  - scikit-learn==1.2
+  - statsmodels==0.13
+  - shapefile==2.3
