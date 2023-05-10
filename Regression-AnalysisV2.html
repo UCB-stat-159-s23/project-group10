@@ -526,12 +526,16 @@ the imputed dataset, assuming MAR.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;imputed_new$PctBlack&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figures/Poverty_Percent_Hist.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/5d81c9abd8285f3df860cd7e9ef4629fac1de758c359e91647462113d0749ecc.png" src="_images/5d81c9abd8285f3df860cd7e9ef4629fac1de758c359e91647462113d0749ecc.png" />
 <img alt="_images/2e7335d298613a1deb24f51a9371522f2fc03dec25fb61ec9eefff8d918bfb68.png" src="_images/2e7335d298613a1deb24f51a9371522f2fc03dec25fb61ec9eefff8d918bfb68.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 640x480 with 0 Axes&gt;
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -555,7 +559,7 @@ Dep. Variable:       TARGET_deathRate   R-squared:                       0.240
 Model:                            OLS   Adj. R-squared:                  0.239
 Method:                 Least Squares   F-statistic:                     240.4
 Date:                Wed, 10 May 2023   Prob (F-statistic):          1.39e-179
-Time:                        06:25:50   Log-Likelihood:                -14031.
+Time:                        21:22:11   Log-Likelihood:                -14031.
 No. Observations:                3047   AIC:                         2.807e+04
 Df Residuals:                    3042   BIC:                         2.810e+04
 Df Model:                           4                                         
@@ -931,7 +935,7 @@ Dep. Variable:       TARGET_deathRate   R-squared:                       0.267
 Model:                            OLS   Adj. R-squared:                  0.266
 Method:                 Least Squares   F-statistic:                     221.6
 Date:                Wed, 10 May 2023   Prob (F-statistic):          4.65e-202
-Time:                        06:25:58   Log-Likelihood:                -13976.
+Time:                        21:22:15   Log-Likelihood:                -13976.
 No. Observations:                3047   AIC:                         2.796e+04
 Df Residuals:                    3041   BIC:                         2.800e+04
 Df Model:                           5                                         
@@ -1079,14 +1083,12 @@ large penalty alpha coefficients: [ 0.73507278  0.1688434   0.5539995  -0.203766
     <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bootdf</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     
 <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;95</span><span class="si">% c</span><span class="s1">onfidence intervals for linear regression coefficients&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figures/Confidence_Interval_Hist.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0.98, &#39;95% confidence intervals for linear regression coefficients&#39;)
-</pre></div>
-</div>
-<img alt="_images/157299f1ad6da53df378fd88f78f97475a1b6efd30dd08437bd5e7bdfa67785d.png" src="_images/157299f1ad6da53df378fd88f78f97475a1b6efd30dd08437bd5e7bdfa67785d.png" />
+<img alt="_images/ad21cd5d2ab7ff8d015f11b585dbbb5e6c594062271f5469878901059f8ca193.png" src="_images/ad21cd5d2ab7ff8d015f11b585dbbb5e6c594062271f5469878901059f8ca193.png" />
 </div>
 </div>
 <p>We employ a Bonferroni correction (in red) to account for the simultaneous construction of 6 confidence intervals and 6 hypothesis tests.</p>
@@ -1118,7 +1120,7 @@ Dep. Variable:       TARGET_deathRate   R-squared:                       0.287
 Model:                            OLS   Adj. R-squared:                  0.285
 Method:                 Least Squares   F-statistic:                     203.5
 Date:                Wed, 10 May 2023   Prob (F-statistic):          1.15e-218
-Time:                        06:49:55   Log-Likelihood:                -13935.
+Time:                        21:22:40   Log-Likelihood:                -13935.
 No. Observations:                3047   AIC:                         2.788e+04
 Df Residuals:                    3040   BIC:                         2.793e+04
 Df Model:                           6                                         
