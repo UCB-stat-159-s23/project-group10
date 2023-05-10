@@ -396,10 +396,14 @@ document.write(`
 <p>The initial variable selection for the regression model is informed by domain knowledge and insights from the prior visualizations. Variables such as povertyPercent, PctBlack, PctNoHS18_24, and PctHS18_24 are chosen based on their importance in cancer mortality.</p>
 <p>The regression model is fitted using the OLS method from the statsmodels library. The initial model has a low R-squared value of 0.24, indicating weak explanatory power.</p>
 <p>To improve the model, a categorical variable “isSoutheast” is created to indicate whether a county is in the Southeast region. The regions are defined based on the Bureau of Economic Analysis classification. ANOVA is used to test the significance of this categorical variable in the regression.</p>
+<p>We further employ some techniques to evaluate some feature selection and model performance metrics. We apply LASSO in order to aattempt to select out features of the model, with mixed results depending on various hyperparameter values. We also apply the nonparametric bootstrap to perform a relaxed analysis on the statistical significance of the coefficients of the model, noticing some trends and applying a Bonferroni correction in light of testing for many coefficients.</p>
 </section>
 <section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
 <p>The initial regression analysis provides insights into the relationships between socioeconomic factors and cancer mortality rates. Further refinement and analysis are needed to develop a more robust and accurate predictive model.</p>
+<p>The most important finding is that counties in the Southeast region of the United States have significantly higher cancer mortality than other regions of the United States. We are able to reject the hypothesis that the Southeast dummy variable may be 0 utilizing the nonparametric bootstrap, and also note it was not selected out of the model when using the LASSO algorithm.</p>
+<p>Regardless, from these conclusions we would suggest further
+research on specifically the Southeast region of the United States, to better understand the specific causes of such higher mortality rates. Additionally, based on the results, education and poverty were identified as significant predictors of cancer mortality, suggesting a few areas of focus to start research on. Overall, the results highlight the need for federal action to aid these Southeast communities, which in turn will reduce cancer mortality overall in the United States.</p>
 </section>
 <section id="author-contributions">
 <h2>Author Contributions<a class="headerlink" href="#author-contributions" title="Permalink to this heading">#</a></h2>
