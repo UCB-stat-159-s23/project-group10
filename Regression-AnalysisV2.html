@@ -157,6 +157,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Regression in Python</a></li>
 
+
+
+
 </ul>
 
     </div>
@@ -351,7 +354,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regression in Python</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bootstrapping">bootstrapping</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-preprocessing-the-data">Step 1: Preprocessing the Data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-feature-selection-using-lasso">Step 2: Feature Selection using LASSO</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-statistical-inference-using-nonparametric-bootstrap">Step 3: Statistical Inference using Nonparametric Bootstrap</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-conclusion-of-the-model">Step 4: Conclusion of the Model</a></li>
 </ul>
 
             </nav>
@@ -383,6 +389,10 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="step-1-preprocessing-the-data">
+<h1>Step 1: Preprocessing the Data<a class="headerlink" href="#step-1-preprocessing-the-data" title="Permalink to this heading">#</a></h1>
+<p>In this step, we will utilize the cancerolstools preprocess module along with some functions from the ols module to clean the data and make it suitable for linear modeling. Namely, we will start by applying the preprocessing steps detailed in the Data Preparation phase, and then apply a convenient technique to convert the names of states into integers for later convenience in the project.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fips_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">import_fips</span><span class="p">()</span>
@@ -393,38 +403,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # add a new column &#39;Target_div_Income&#39;</span>
-<span class="c1"># cancer_df[&#39;Target_div_Income&#39;] = cancer_df[&#39;TARGET_deathRate&#39;] / cancer_df[&#39;medIncome&#39;]</span>
-
-<span class="c1"># # extract state and county from &#39;Geography&#39; column and create new columns</span>
-<span class="c1"># cancer_df[[&#39;County&#39;, &#39;State&#39;]] = cancer_df[&#39;Geography&#39;].str.extract(r&#39;(.+), (.+)&#39;)</span>
-<span class="c1"># cancer_df[&#39;County&#39;] = cancer_df[&#39;County&#39;].str.replace(&#39; County&#39;, &#39;&#39;)</span>
-
-<span class="c1"># # manually change two county names</span>
-<span class="c1"># cancer_df.loc[166, &#39;County&#39;] = &#39;Dona Ana County&#39;</span>
-<span class="c1"># cancer_df.loc[820, &#39;County&#39;] = &#39;La Salle Parish&#39;</span>
-
-<span class="c1"># # merge the dataframes to get the FIPS codes</span>
-<span class="c1"># cancer_merge_df = pd.merge(cancer_df, fips_df,</span>
-<span class="c1">#                      left_on=[&#39;County&#39;], right_on=[&#39;CountyName&#39;], how=&#39;left&#39;)</span>
-
-<span class="c1"># # add a new column &#39;Target_div_LogIncome&#39;</span>
-<span class="c1"># cancer_merge_df[&#39;Target_div_LogIncome&#39;] = cancer_merge_df[&#39;TARGET_deathRate&#39;] / \</span>
-<span class="c1">#                                     (cancer_merge_df[&#39;medIncome&#39;].apply(lambda x: math.log(x)))</span>
-
-<span class="c1"># cancer_merge_df</span>
-<span class="c1"># # create a new dataframe for graphdata with columns &#39;fips&#39; and &#39;values&#39;</span>
-<span class="c1"># graphdata = pd.DataFrame({&#39;fips&#39;: cancer_merge_df[&#39;CountyFIPS&#39;],</span>
-<span class="c1">#                           &#39;values&#39;: cancer_merge_df[&#39;Target_div_LogIncome&#39;],</span>
-<span class="c1">#                           &#39;CountyFIPS&#39;: cancer_merge_df[&#39;CountyFIPS&#39;]})</span>
-
-<span class="c1"># # create a new dataframe newbieLOG with column &#39;anomalies&#39;</span>
-<span class="c1"># newbieLOG = graphdata.copy()</span>
-<span class="c1"># newbieLOG[&#39;anomalies&#39;] = (newbieLOG[&#39;values&#39;] - newbieLOG[&#39;values&#39;].mean()) / newbieLOG[&#39;values&#39;].std()</span>
-<span class="c1"># newbieLOG[&#39;anomalies&#39;] = np.where((newbieLOG[&#39;anomalies&#39;]) &gt; 1, (newbieLOG[&#39;anomalies&#39;]), 0)</span>
-<span class="c1"># newbieLOG = newbieLOG[[&#39;fips&#39;, &#39;anomalies&#39;]]</span>
-
-<span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">cancer_preprocess</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">cancer_preprocess</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
 
 <span class="n">state_dict</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">make_state_dict</span><span class="p">()</span>
 </pre></div>
@@ -433,71 +412,12 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># state_dict = {&quot;Alabama&quot;: 1,</span>
-<span class="c1">#     &quot;Alaska&quot;: 2,</span>
-<span class="c1">#     &quot;Arizona&quot;: 3,</span>
-<span class="c1">#     &quot;Arkansas&quot;: 4,</span>
-<span class="c1">#     &quot;California&quot;: 5,</span>
-<span class="c1">#     &quot;Colorado&quot;: 6,</span>
-<span class="c1">#     &quot;Connecticut&quot;: 7,</span>
-<span class="c1">#     &quot;Delaware&quot;: 8,</span>
-<span class="c1">#     &quot;Florida&quot;: 9,</span>
-<span class="c1">#     &quot;Georgia&quot;: 10,</span>
-<span class="c1">#     &quot;Hawaii&quot;: 11,</span>
-<span class="c1">#     &quot;Idaho&quot;: 12,</span>
-<span class="c1">#     &quot;Illinois&quot;: 13,</span>
-<span class="c1">#     &quot;Indiana&quot;: 14,</span>
-<span class="c1">#     &quot;Iowa&quot;: 15,</span>
-<span class="c1">#     &quot;Kansas&quot;: 16,</span>
-<span class="c1">#     &quot;Kentucky&quot;: 17,</span>
-<span class="c1">#     &quot;Louisiana&quot;: 18,</span>
-<span class="c1">#     &quot;Maine&quot;: 19,</span>
-<span class="c1">#     &quot;Maryland&quot;: 20,</span>
-<span class="c1">#     &quot;Massachusetts&quot;: 21,</span>
-<span class="c1">#     &quot;Michigan&quot;: 22,</span>
-<span class="c1">#     &quot;Minnesota&quot;: 23,</span>
-<span class="c1">#     &quot;Mississippi&quot;: 24,</span>
-<span class="c1">#     &quot;Missouri&quot;: 25,</span>
-<span class="c1">#     &quot;Montana&quot;: 26,</span>
-<span class="c1">#     &quot;Nebraska&quot;: 27,</span>
-<span class="c1">#     &quot;Nevada&quot;: 28,</span>
-<span class="c1">#     &quot;New Hampshire&quot;: 29,</span>
-<span class="c1">#     &quot;New Jersey&quot;: 30,</span>
-<span class="c1">#     &quot;New Mexico&quot;: 31,</span>
-<span class="c1">#     &quot;New York&quot;: 32,</span>
-<span class="c1">#     &quot;North Carolina&quot;: 33,</span>
-<span class="c1">#     &quot;North Dakota&quot;: 34,</span>
-<span class="c1">#     &quot;Ohio&quot;: 35,</span>
-<span class="c1">#     &quot;Oklahoma&quot;: 36,</span>
-<span class="c1">#     &quot;Oregon&quot;: 37,</span>
-<span class="c1">#     &quot;Pennsylvania&quot;: 38,</span>
-<span class="c1">#     &quot;Rhode Island&quot;: 39,</span>
-<span class="c1">#     &quot;South Carolina&quot;: 40,</span>
-<span class="c1">#     &quot;South Dakota&quot;: 41,</span>
-<span class="c1">#     &quot;Tennessee&quot;: 42,</span>
-<span class="c1">#     &quot;Texas&quot;: 43,</span>
-<span class="c1">#     &quot;Utah&quot;: 44,</span>
-<span class="c1">#     &quot;Vermont&quot;: 45,</span>
-<span class="c1">#     &quot;Virginia&quot;: 46,</span>
-<span class="c1">#     &quot;Washington&quot;: 47,</span>
-<span class="c1">#     &quot;West Virginia&quot;: 48,</span>
-<span class="c1">#     &quot;Wisconsin&quot;: 49,</span>
-<span class="c1">#     &quot;Wyoming&quot;: 50,</span>
-<span class="c1">#     &quot;District of Columbia&quot;: 51}</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_int_df</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">cancer_int</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cancer_int_df = cancer_df.drop(columns=[&#39;binnedInc&#39;, &#39;Geography&#39;, &#39;County&#39;])</span>
-<span class="c1"># cancer_int_df = cancer_int_df.replace({&quot;State&quot;: state_dict})</span>
-
-<span class="n">cancer_int_df</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">cancer_int</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>We begin our discussion by observing the percentage of values in each column that are recorded as NA. As linear regression will require some kind of value for these rows in order to generate a prediction, we will need to determine an appropriate method to impute heavily missing variables, and also diagnose if these variables are significant to the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">moddat</span> <span class="o">=</span> <span class="n">cancer_int_df</span>
@@ -634,8 +554,8 @@ the imputed dataset, assuming MAR.</p>
 Dep. Variable:       TARGET_deathRate   R-squared:                       0.240
 Model:                            OLS   Adj. R-squared:                  0.239
 Method:                 Least Squares   F-statistic:                     240.4
-Date:                Tue, 09 May 2023   Prob (F-statistic):          1.39e-179
-Time:                        06:44:52   Log-Likelihood:                -14031.
+Date:                Wed, 10 May 2023   Prob (F-statistic):          1.39e-179
+Time:                        06:25:50   Log-Likelihood:                -14031.
 No. Observations:                3047   AIC:                         2.807e+04
 Df Residuals:                    3042   BIC:                         2.810e+04
 Df Model:                           4                                         
@@ -1010,8 +930,8 @@ Notes:
 Dep. Variable:       TARGET_deathRate   R-squared:                       0.267
 Model:                            OLS   Adj. R-squared:                  0.266
 Method:                 Least Squares   F-statistic:                     221.6
-Date:                Tue, 09 May 2023   Prob (F-statistic):          4.65e-202
-Time:                        06:44:52   Log-Likelihood:                -13976.
+Date:                Wed, 10 May 2023   Prob (F-statistic):          4.65e-202
+Time:                        06:25:58   Log-Likelihood:                -13976.
 No. Observations:                3047   AIC:                         2.796e+04
 Df Residuals:                    3041   BIC:                         2.800e+04
 Df Model:                           5                                         
@@ -1038,7 +958,10 @@ Notes:
 </div>
 </div>
 </div>
-<p>To add variables of interest, we will be using Lasso regression using a Lambda 1 standard deviation away from the minimum residual deviance Lambda value, which will be obtained using cross-validation. Here is the graph of Lambda values, with the minimum Lambda at 0.1434, and the 1 SE Lambda value at 2.1288.</p>
+</section>
+<section id="step-2-feature-selection-using-lasso">
+<h1>Step 2: Feature Selection using LASSO<a class="headerlink" href="#step-2-feature-selection-using-lasso" title="Permalink to this heading">#</a></h1>
+<p>To add variables of interest, we will be using Lasso regression using the minimum residual deviance Lambda value, which will be obtained using cross-validation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LassoCV</span>
@@ -1052,6 +975,12 @@ Notes:
 <span class="n">modelcvalpha</span> <span class="o">=</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">alphas</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100000</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">alpha</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">modelcvalpha</span><span class="p">,</span> <span class="s1">&#39;alpha_&#39;</span><span class="p">)</span>
+<span class="n">alpha</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1036378151764025
 </pre></div>
 </div>
 </div>
@@ -1062,29 +991,43 @@ Notes:
 <span class="n">newmodel</span> <span class="o">=</span> <span class="n">newmodel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">coefs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newmodel</span><span class="p">,</span> <span class="s1">&#39;coef_&#39;</span><span class="p">)</span>
-<span class="n">coefs</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;original alpha coefficients:&#39;</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
+
+<span class="n">med_penalty</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">med_penalty</span> <span class="o">=</span> <span class="n">med_penalty</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">coefs2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">med_penalty</span><span class="p">,</span> <span class="s1">&#39;coef_&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;medium penalty alpha coefficients:&#39;</span><span class="p">,</span> <span class="n">coefs2</span><span class="p">)</span>
+
+<span class="n">big_penalty</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">2.1288</span><span class="p">)</span>
+<span class="n">big_penalty</span> <span class="o">=</span> <span class="n">big_penalty</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">coefs3</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">big_penalty</span><span class="p">,</span> <span class="s1">&#39;coef_&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;large penalty alpha coefficients:&#39;</span><span class="p">,</span> <span class="n">coefs3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 6.18181993e-01,  6.51711241e-04,  4.98726850e-01, -1.89012910e-01,
-        1.07662463e+01,  3.04999629e-01,  6.05695117e-01,  5.43496705e-01])
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>original alpha coefficients: [ 6.18181993e-01  6.51711241e-04  4.98726850e-01 -1.89012910e-01
+  1.07662463e+01  3.04999629e-01  6.05695117e-01  5.43496705e-01]
+medium penalty alpha coefficients: [ 0.68629493  0.09569364  0.53236952 -0.20267754  4.6051785   0.30719053
+  0.61788852  0.50146913]
+large penalty alpha coefficients: [ 0.73507278  0.1688434   0.5539995  -0.20376628  0.          0.30902248
+  0.62794433  0.43131725]
 </pre></div>
 </div>
 </div>
 </div>
+<p>Based on the result of the optimal LASSO regression using the alpha value of 0.103 that minimizes residual deviance using the LassoCV function, we observe that none of the coefficients are in fact regularized out of the model. In fact, even with an alpha hyperparameter of 10 times the optimal alpha value, still no covariates are removed from the model. From what we can see, it seems that the 2nd covariate, ‘PctBlack’, is the most close to 0 in both cases. We will investigate the statistical significance of these variables more closely in the following section, bootstrapping, but it is interesting to realize that even by applying the canonical LASSO method which should tend to regularize out covariates and give a more parsimonious model, we need to employ quite a larger hyperparameter to realize the effect of shrinkage.</p>
+<p>We note that in the original R analysis from which this project is based using the glmnet package, the lambda value that reaches 1 standard error away from the minimum is 2.1288. For comparison’s sake, we implement this alpha value as well to determine if shrinkage occurs. Indeed we see that the 5th covariate, ‘isSoutheast’, has been removed from the model as opposed to simply the covariate with the smallest magnitude.</p>
+<p>What we can determine from these results is ultimately sparse, as there was no consistent pattern seeing as only 1 coefficient was selected out of the model. While feature selection has indeed occurred using the larger alpha value, it is not certain to see that this necessarily generates the best model, or that the ‘isSoutheast’ is the worst feature. This motivates our second point of analysis, which relaxes the assumptions of linear modeling, which is the nonparametric bootstrap method of generating confidence intervals for different parameters.</p>
 </section>
-<section id="bootstrapping">
-<h1>bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this heading">#</a></h1>
+<section id="step-3-statistical-inference-using-nonparametric-bootstrap">
+<h1>Step 3: Statistical Inference using Nonparametric Bootstrap<a class="headerlink" href="#step-3-statistical-inference-using-nonparametric-bootstrap" title="Permalink to this heading">#</a></h1>
+<p>We apply a nonparametric bootstrap approach to determine the statistical significance of the various parameters involved in the imputed dataset. This will relax the assumptions of the linear modeling, specifically the assumption of normally distributed errors, and allow us to visualize the distributions of these coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Create a function to calculate the coefficients using the bootstrap</span>
-<span class="c1"># def bootstrap_model(data):</span>
-<span class="c1">#     data_boot = data.sample(n=len(data), replace=True)</span>
-<span class="c1">#     model = smf.ols(formula=&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;, data=data_boot).fit()</span>
-<span class="c1">#     return model.params[1:]</span>
-
-<span class="n">povertyPercent</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">povertyPercent</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">PctHS18_24</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">isSoutheast</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">PctPublicCoverage</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1105,6 +1048,7 @@ Notes:
 </div>
 </div>
 </div>
+<p>The above code utilizes the function <code class="docutils literal notranslate"><span class="pre">bootstrap_model</span></code> from the ols module of the cancerolstools package, which conducts a nonparametric bootstrap on given data and extracts linear regression coefficients. We additionally locate the original parameters on the original sample for comparison.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#make df of results</span>
@@ -1127,17 +1071,99 @@ Notes:
 <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">97.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">97.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
     <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">orig_params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">2.5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mi">100</span><span class="o">-</span><span class="p">(</span><span class="mf">2.5</span><span class="o">/</span><span class="mi">6</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bootdf</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;95</span><span class="si">% c</span><span class="s1">onfidence intervals for linear regression coefficients&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a2f5de3df526d0f60cefa12bb220b08e255868163e45506ed471b13fac939352.png" src="_images/a2f5de3df526d0f60cefa12bb220b08e255868163e45506ed471b13fac939352.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0.98, &#39;95% confidence intervals for linear regression coefficients&#39;)
+</pre></div>
+</div>
+<img alt="_images/157299f1ad6da53df378fd88f78f97475a1b6efd30dd08437bd5e7bdfa67785d.png" src="_images/157299f1ad6da53df378fd88f78f97475a1b6efd30dd08437bd5e7bdfa67785d.png" />
 </div>
 </div>
+<p>We employ a Bonferroni correction (in red) to account for the simultaneous construction of 6 confidence intervals and 6 hypothesis tests.</p>
+<p>From initial inspection, it’s clear that povertyPercent, PctHS18_24, and isSoutheastYes
+all reject the null hypothesis that the respective coefficient effect is actually 0. Upon inspecting
+PctUnemployed16_Over’s bottom quantile, it appears this variable fails to reject
+the null hypothesis that the respective coefficient effect is actually 0. PctPublicCoverage and
+PctPublicCoverageAlone both fail to reject the hypothesis that the coefficient effect is actually 0 if a Bonferroni correction is applied.</p>
+<p>Based on these inference results, each of the variables with a confidence interval that doesn’t
+include 0 does have some effect on cancer mortality, while we cannot for certain say the same for
+PctPublicCoverage and PctPublicCoverageAlone, whose confidence interval does contain 0.
+These conclusions of course are contingent on confidence level selected (0.05 with a Bonferroni
+Correction), the randomness of the Bootstrap (10000 replications), as well as the randomness of
+the imputation process.</p>
+</section>
+<section id="step-4-conclusion-of-the-model">
+<h1>Step 4: Conclusion of the Model<a class="headerlink" href="#step-4-conclusion-of-the-model" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">orig_params_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">orig_params_model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:       TARGET_deathRate   R-squared:                       0.287
+Model:                            OLS   Adj. R-squared:                  0.285
+Method:                 Least Squares   F-statistic:                     203.5
+Date:                Wed, 10 May 2023   Prob (F-statistic):          1.15e-218
+Time:                        06:49:55   Log-Likelihood:                -13935.
+No. Observations:                3047   AIC:                         2.788e+04
+Df Residuals:                    3040   BIC:                         2.793e+04
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+==========================================================================================
+                             coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+Intercept                122.3032      2.484     49.234      0.000     117.433     127.174
+povertyPercent             0.5638      0.121      4.672      0.000       0.327       0.800
+PctHS18_24                 0.4931      0.050      9.922      0.000       0.396       0.591
+isSoutheast               11.6651      1.016     11.485      0.000       9.674      13.657
+PctPublicCoverage          0.2811      0.111      2.535      0.011       0.064       0.498
+PctPublicCoverageAlone     0.5704      0.183      3.123      0.002       0.212       0.929
+PctUnemployed16_Over       0.5630      0.173      3.253      0.001       0.224       0.902
+==============================================================================
+Omnibus:                      150.486   Durbin-Watson:                   1.579
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              514.948
+Skew:                          -0.109   Prob(JB):                    1.52e-112
+Kurtosis:                       5.002   Cond. No.                         341.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Based on the results of my modeling using Lasso regression and Bootstrap inference, we
+came to the following conclusions to the research question.</p>
+<p>For every percent increase of a county’s population in poverty, on average the cancer mortality per 100,000 residents in a county increases by approximately 0.563 individuals (CI: 0.2000-0.9467). For every percent increase of county residents ages 18-24 who’s highest education attained is a high school diploma, on average the cancer mortality per 100,000 residents increases by 0.4931 (CI: 0.3419-0.6497).</p>
+<p>Compared to other regions of the United States, Southeast counties have on average 11.66 (CI:
+8.642-14.6664) more cancer deaths per 100,000 residents. For every percent increase of county
+residents with government-provided health coverage, on average the cancer mortality per 100,000 residents in a county increases by approximately 0.2811 individuals (CI: -0.06139 -0.6253).</p>
+<p>For every percent increase of county residents with government-provided health coverage alone, on average the cancer mortality per 100,000 residents in a county increases by approximately 0.5704 individuals (CI: -0.00614-1.1627). Finally, for every percent increase of county residents ages 16 and over unemployed, on average the cancer mortality per 100,000 residents in a county increases by approximately 0.563 individuals (CI: 0.0119-1.1144).</p>
+<p>From these conclusions, the most important finding is that counties in the Southeast
+region of the United States have significantly higher cancer mortality than other regions of the
+United States. It is important to note that these conclusions have some limitations, including the
+fact that the data ends at 2016 and only includes deaths from lung cancer, and that the modeling
+assumes no excessive collinearity and utilizes techniques such as Lasso or Bootstrapping, which
+have an aspect of randomness. Regardless, from these conclusions we would suggest further
+research on specifically the Southeast region of the United States, to better understand the
+specific causes of such higher mortality rates. Additionally, based on the results, education and
+poverty were identified as significant predictors of cancer mortality, suggesting a few areas of
+focus to start research on. Overall, the results highlight the need for federal action to aid these
+Southeast communities, which in turn will reduce cancer mortality overall in the United States.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1199,7 +1225,10 @@ Notes:
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regression in Python</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bootstrapping">bootstrapping</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-preprocessing-the-data">Step 1: Preprocessing the Data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-feature-selection-using-lasso">Step 2: Feature Selection using LASSO</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-statistical-inference-using-nonparametric-bootstrap">Step 3: Statistical Inference using Nonparametric Bootstrap</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-conclusion-of-the-model">Step 4: Conclusion of the Model</a></li>
 </ul>
 
   </nav></div>
