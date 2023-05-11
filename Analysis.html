@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Stat 159 Final Project &#8212; Cancer OLS Challenge Project Jupyter Book</title>
+    <title>Regression Analysis &#8212; Cancer OLS Challenge Project Jupyter Book</title>
   
   
   
@@ -155,12 +155,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Data-Preparation.html">Data Preparation</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Stat 159 Final Project</a></li>
-
-
-
-
-
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Regression Analysis</a></li>
 </ul>
 
     </div>
@@ -344,7 +339,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Stat 159 Final Project</h1>
+    <h1>Regression Analysis</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -354,14 +349,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Stat 159 Final Project</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -372,8 +365,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="stat-159-final-project">
-<h1>Stat 159 Final Project<a class="headerlink" href="#stat-159-final-project" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="regression-analysis">
+<h1>Regression Analysis<a class="headerlink" href="#regression-analysis" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -393,9 +386,8 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
 <section id="data-preprocessing">
-<h1>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h1>
+<h2>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h2>
 <p>In this step, we will utilize the cancerolstools preprocess module along with some functions from the ols module to clean the data and make it suitable for linear modeling. Namely, we will start by applying the preprocessing steps detailed in the Data Preparation phase, and then apply a convenient technique to convert the names of states into integers for later convenience in the project.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -510,7 +502,7 @@ the imputed dataset, assuming MAR.</p>
 </div>
 </section>
 <section id="feature-selection-using-lasso">
-<h1>Feature Selection Using LASSO<a class="headerlink" href="#feature-selection-using-lasso" title="Permalink to this heading">#</a></h1>
+<h2>Feature Selection Using LASSO<a class="headerlink" href="#feature-selection-using-lasso" title="Permalink to this heading">#</a></h2>
 <p>Initial variable selection for our model will be informed by domain knowledge and insight gained from prior visualization of the data.</p>
 <p>Literature on socioeconomic factors affecting cancer mortality point to poverty, education, and race as some of the most important factors. In the 2017 paper “Socioeconomic and Racial/Ethnic Disparities in Cancer Mortality, Incidence, and Survival in the United States, 1950–2014: Over Six Decades of Changing Patterns and Widening Inequalities,” the authors concluded that individuals in lower income and education groups had significantly higher mortality and incidence rates (Singh and Jemal). The authors also noted that Blacks had higher mortality and incidence rates than other races, likely due to the interconnection of race and income. In the 2021 paper “Leading cancers contributing to educational disparities in cancer mortality in the US, 2017,” the authors concluded that there was a significant difference between the mortality rate between individuals with a bachelors degree and higher, and all education levels below that (Withrow, D. R Et al.). Since both these studies use data exclusively from the U.S., and are within the time frame of interest to us, we decided to use these conclusions to guide our variable selection. Prior visualization of the data set supports these conclusions as well as suggest a categorical variable indicating whether a given county is in the Southwest region. To define which states belong to the Southeast, we used the regions specified by the Bureau of Economic Analysis, who divide the United States into 8 regions.</p>
 <p>Additionally, the conclusions from the second paper suggest a new variable related to education, <strong>PctHS18_24</strong> (Percent of county residents ages 18-24 highest education attained: high school diploma). While there are several other variables related to educational goals, such as percentage of county residents ages 18-24 who have attained a bachelors, the literature above suggests that residents with lower educational achievements tend to have a higher cancer mortality, while the opposite is not necessarily true. The variables for the initial model were thus <strong>povertyPercent</strong> (Percent of populace in poverty), <strong>PctBlack</strong> (Percent of county residents who identify as Black), and <strong>PctHS18_24</strong>.</p>
@@ -954,7 +946,7 @@ Notes:
 <p>According to the Lasso results, <strong>PctBlack</strong> was eliminated, while <strong>PctPublicCoverage</strong>, <strong>PctHS18_24</strong>, <strong>PctPublicCoverageAlone</strong>, and <strong>PctUnemployed16_Over</strong> were admitted. Interpreting these results, it appears that for this data set, variables related to healthcare coverage and unemployment are better predictors of cancer mortality than the percentage of black residents. We don’t find this contradictory to prior literature cited that concludes a racial divide in cancer mortality, as not only does Lasso judge on prediction accuracy, but it’s more likely that these variables are correlated in some way, and the variables related to healthcare coverage and poverty are more comprehensive due to not segregating by race.</p>
 </section>
 <section id="coefficient-inference-using-the-bootstrap">
-<h1>Coefficient Inference using the Bootstrap<a class="headerlink" href="#coefficient-inference-using-the-bootstrap" title="Permalink to this heading">#</a></h1>
+<h2>Coefficient Inference using the Bootstrap<a class="headerlink" href="#coefficient-inference-using-the-bootstrap" title="Permalink to this heading">#</a></h2>
 <p>We apply a nonparametric bootstrap approach to determine the statistical significance of the various parameters involved in the imputed dataset. This will relax the assumptions of the linear modeling, specifically the assumption of normally distributed errors, and allow us to visualize the distributions of these coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1033,7 +1025,7 @@ Correction), the randomness of the Bootstrap (1000 replications), as well as the
 the imputation process. Using a random seed, we provide just 1 realization of the results.</p>
 </section>
 <section id="variable-interpretation-conclusion">
-<h1>Variable Interpretation/Conclusion<a class="headerlink" href="#variable-interpretation-conclusion" title="Permalink to this heading">#</a></h1>
+<h2>Variable Interpretation/Conclusion<a class="headerlink" href="#variable-interpretation-conclusion" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">orig_params_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
@@ -1078,9 +1070,10 @@ Notes:
 </div>
 </section>
 <section id="sources-cited">
-<h1>Sources Cited<a class="headerlink" href="#sources-cited" title="Permalink to this heading">#</a></h1>
+<h2>Sources Cited<a class="headerlink" href="#sources-cited" title="Permalink to this heading">#</a></h2>
 <p>Singh, G. K., &amp; Jemal, A. (2017). Socioeconomic and Racial/Ethnic Disparities in Cancer Mortality, Incidence, and    Survival in the United States, 1950-2014: Over Six Decades of Changing Patterns and Widening Inequalities. Journal of environmental and public health, 2017, 2819372. <a class="reference external" href="https://doi.org/10.1155/2017/2819372">https://doi.org/10.1155/2017/2819372</a></p>
 <p>Withrow, D. R., Freedman, N. D., Gibson, J. T., Yu, M., Nápoles, A. M., Berrington de González, A., &amp; Shiels, M. S. (2021). Leading cancers contributing to educational disparities in cancer mortality in the US, 2017. Cancer causes &amp; control : CCC, 32(11), 1193–1196. <a class="reference external" href="https://doi.org/10.1007/s10552-021-01471-9">https://doi.org/10.1007/s10552-021-01471-9</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1141,14 +1134,12 @@ Notes:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Stat 159 Final Project</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
