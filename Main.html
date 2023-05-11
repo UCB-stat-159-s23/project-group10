@@ -352,10 +352,10 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-motivations">Modeling Tool Motivations</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-assumptions">Modeling Tool Assumptions</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#author-credits">Author Credits</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
 </ul>
 
@@ -371,25 +371,6 @@ document.write(`
                   
   <section id="stat-159-final-project">
 <h1>Stat 159 Final Project<a class="headerlink" href="#stat-159-final-project" title="Permalink to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">shapefile</span> <span class="k">as</span> <span class="nn">shp</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="kn">from</span> <span class="nn">cancerolstools</span> <span class="kn">import</span> <span class="n">preprocess</span> <span class="k">as</span> <span class="n">pp</span>
-<span class="kn">from</span> <span class="nn">cancerolstools</span> <span class="kn">import</span> <span class="n">ols</span> <span class="k">as</span> <span class="n">ls</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
@@ -403,629 +384,26 @@ document.write(`
 <h1>Modeling Tool Assumptions<a class="headerlink" href="#modeling-tool-assumptions" title="Permalink to this heading">#</a></h1>
 <p>As mentioned prior, by using Lasso regression and Bootstrap inference, the assumptions I assumed about my model were homoskedasticity, linearity, and no excessive multicollinearity. I also am assuming that my sample is representative of the population.</p>
 </section>
-<section id="data-preprocessing">
-<h1>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h1>
-<p>In this step, we will utilize the cancerolstools preprocess module along with some functions from the ols module to clean the data and make it suitable for linear modeling. Namely, we will start by applying the preprocessing steps detailed in the Data Preparation phase, and then apply a convenient technique to convert the names of states into integers for later convenience in the project.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fips_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">import_fips</span><span class="p">()</span>
-<span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">import_cancer</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_df</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">cancer_preprocess</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
-
-<span class="n">state_dict</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">make_state_dict</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_int_df</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">cancer_int</span><span class="p">(</span><span class="n">cancer_df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We begin our discussion by observing the percentage of values in each column that are recorded as NA. As linear regression will require some kind of value for these rows in order to generate a prediction, we will need to determine an appropriate method to impute heavily missing variables, and also diagnose if these variables are significant to the model.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">moddat</span> <span class="o">=</span> <span class="n">cancer_int_df</span>
-<span class="p">(</span><span class="n">moddat</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">*</span><span class="mi">100</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>avgAnnCount                 0.000000
-avgDeathsPerYear            0.000000
-TARGET_deathRate            0.000000
-incidenceRate               0.000000
-medIncome                   0.000000
-popEst2015                  0.000000
-povertyPercent              0.000000
-studyPerCap                 0.000000
-MedianAge                   0.000000
-MedianAgeMale               0.000000
-MedianAgeFemale             0.000000
-AvgHouseholdSize            0.000000
-PercentMarried              0.000000
-PctNoHS18_24                0.000000
-PctHS18_24                  0.000000
-PctSomeCol18_24            74.991795
-PctBachDeg18_24             0.000000
-PctHS25_Over                0.000000
-PctBachDeg25_Over           0.000000
-PctEmployed16_Over          4.988513
-PctUnemployed16_Over        0.000000
-PctPrivateCoverage          0.000000
-PctPrivateCoverageAlone    19.986872
-PctEmpPrivCoverage          0.000000
-PctPublicCoverage           0.000000
-PctPublicCoverageAlone      0.000000
-PctWhite                    0.000000
-PctBlack                    0.000000
-PctAsian                    0.000000
-PctOtherRace                0.000000
-PctMarriedHouseholds        0.000000
-BirthRate                   0.000000
-Target_div_Income           0.000000
-State                       0.000000
-Target_div_LogIncome        0.000000
-dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>Since PctSomeCol18_24 has a NA rate of 74.99%, and represents the inbetween between high
-school diploma and bachelors, we can justify excluding it.
-PctEmployed16_Over has only a 4.99% NA rate, and PctPublicCoverageAlone, which is the
-percentage of county residents with government-provided health coverage alone, has a 19.99%
-NA rate, but seems too important to ignore if we wish to consider the status of coverage as a
-variable(s).
-Let us do MICE (Multiple Imputation by Chained Equations) to replace these NA values with
-very likely substitutions. MICE operates under the assumption that the data missing is MAR
-(Missing at Random).
-Due to the data collection process (each row represents a county), the likely possible bias is
-that certain states refuse or fail to collect these variables in a systematic way, and thus the
-data is no longer MAR. We will check this assumption towards the end of the modelling by
-considering our finalized model on both the imputated and original dataset (rows including
-NA’s will be removed), and assess their similarities. Regardless, modelling will be done using
-the imputed dataset, assuming MAR.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop the 18th column from the dataframe</span>
-<span class="n">trim</span> <span class="o">=</span> <span class="n">moddat</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PctSomeCol18_24&#39;</span><span class="p">])</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>
-<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">IterativeImputer</span>
-
-<span class="c1"># create an instance of the imputer class</span>
-<span class="n">imputer</span> <span class="o">=</span> <span class="n">IterativeImputer</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># fit the imputer on the data</span>
-<span class="n">imputer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trim</span><span class="p">)</span>
-
-<span class="c1"># impute the missing values</span>
-<span class="n">imputed_data</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">trim</span><span class="p">)</span>
-
-<span class="c1"># convert the imputed data to a pandas DataFrame</span>
-<span class="n">imputed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">imputed_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">trim</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 <section id="feature-selection-using-lasso">
 <h1>Feature Selection Using LASSO<a class="headerlink" href="#feature-selection-using-lasso" title="Permalink to this heading">#</a></h1>
 <p>Initial variable selection for our model will be informed by domain knowledge and insight gained from prior visualization of the data.</p>
 <p>Literature on socioeconomic factors affecting cancer mortality point to poverty, education, and race as some of the most important factors. In the 2017 paper “Socioeconomic and Racial/Ethnic Disparities in Cancer Mortality, Incidence, and Survival in the United States, 1950–2014: Over Six Decades of Changing Patterns and Widening Inequalities,” the authors concluded that individuals in lower income and education groups had significantly higher mortality and incidence rates (Singh and Jemal). The authors also noted that Blacks had higher mortality and incidence rates than other races, likely due to the interconnection of race and income. In the 2021 paper “Leading cancers contributing to educational disparities in cancer mortality in the US, 2017,” the authors concluded that there was a significant difference between the mortality rate between individuals with a bachelors degree and higher, and all education levels below that (Withrow, D. R Et al.). Since both these studies use data exclusively from the U.S., and are within the time frame of interest to us, we decided to use these conclusions to guide our variable selection. Prior visualization of the data set supports these conclusions as well as suggest a categorical variable indicating whether a given county is in the Southwest region. To define which states belong to the Southeast, we used the regions specified by the Bureau of Economic Analysis, who divide the United States into 8 regions.</p>
 <p>Additionally, the conclusions from the second paper suggest a new variable related to education, <strong>PctHS18_24</strong> (Percent of county residents ages 18-24 highest education attained: high school diploma). While there are several other variables related to educational goals, such as percentage of county residents ages 18-24 who have attained a bachelors, the literature above suggests that residents with lower educational achievements tend to have a higher cancer mortality, while the opposite is not necessarily true. The variables for the initial model were thus <strong>povertyPercent</strong> (Percent of populace in poverty), <strong>PctBlack</strong> (Percent of county residents who identify as Black), and <strong>PctHS18_24</strong>.</p>
 <p>For future investigation we decided to consider <strong>isSouthEast</strong> (Categorical variable indicating whether the county is in the South East), as well as the variables related to healthcare coverage, <strong>PctPublicCoverage</strong> (Percent of county residents with government-provided health coverage) and <strong>PctPublicCoverageAlone</strong> (Percent of county residents with government-provided health coverage alone), and a more nuanced poverty variable <strong>PctUnemployed16_Over</strong> (Percent of county residents ages 16 and over unemployed).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="k">as</span> <span class="nn">lm</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
-<span class="n">imputed_new</span> <span class="o">=</span> <span class="n">imputed_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;TARGET_deathRate ~ povertyPercent + PctBlack + PctHS18_24&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
-==============================================================================
-Dep. Variable:       TARGET_deathRate   R-squared:                       0.238
-Model:                            OLS   Adj. R-squared:                  0.237
-Method:                 Least Squares   F-statistic:                     316.5
-Date:                Thu, 11 May 2023   Prob (F-statistic):          7.60e-179
-Time:                        02:02:58   Log-Likelihood:                -14035.
-No. Observations:                3047   AIC:                         2.808e+04
-Df Residuals:                    3043   BIC:                         2.810e+04
-Df Model:                           3                                         
-Covariance Type:            nonrobust                                         
-==================================================================================
-                     coef    std err          t      P&gt;|t|      [0.025      0.975]
-----------------------------------------------------------------------------------
-Intercept        125.8083      2.030     61.960      0.000     121.827     129.790
-povertyPercent     1.6036      0.080     19.951      0.000       1.446       1.761
-PctBlack           0.1399      0.035      3.964      0.000       0.071       0.209
-PctHS18_24         0.7004      0.049     14.347      0.000       0.605       0.796
-==============================================================================
-Omnibus:                      161.459   Durbin-Watson:                   1.554
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              517.128
-Skew:                          -0.193   Prob(JB):                    5.09e-113
-Kurtosis:                       4.981   Cond. No.                         190.
-==============================================================================
-
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-</pre></div>
-</div>
-</div>
-</div>
-<p>The initial fit is rather weak, with a R-squared of 0.24. Let us code and add <strong>isSoutheast</strong> as a categorical variable. To add variables of interest, we used Lasso regression, a tool for constrained linear regression using cross-validation as a criteria, using the lowest cross-validation error alpha.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Southeast</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Alabama&quot;</span><span class="p">,</span> <span class="s2">&quot;Arkansas&quot;</span><span class="p">,</span> <span class="s2">&quot;Florida&quot;</span><span class="p">,</span> <span class="s2">&quot;Georgia&quot;</span><span class="p">,</span> <span class="s2">&quot;Kentucky&quot;</span><span class="p">,</span> <span class="s2">&quot;Louisiana&quot;</span><span class="p">,</span> <span class="s2">&quot;Mississippi&quot;</span><span class="p">,</span> <span class="s2">&quot;North Carolina&quot;</span><span class="p">,</span> <span class="s2">&quot;South Carolina&quot;</span><span class="p">,</span> <span class="s2">&quot;Tennessee&quot;</span><span class="p">,</span> <span class="s2">&quot;Virginia&quot;</span><span class="p">,</span> <span class="s2">&quot;West Virginia&quot;</span><span class="p">]</span>
-<span class="n">Southeast_int</span> <span class="o">=</span> <span class="p">[</span><span class="n">state_dict</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">Southeast</span><span class="p">]</span>
-<span class="n">Southeast_int</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 4, 9, 10, 17, 18, 24, 33, 40, 42, 46, 48]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;isSoutheast&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;State&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">Southeast_int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">imputed_new</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>avgAnnCount</th>
-      <th>avgDeathsPerYear</th>
-      <th>TARGET_deathRate</th>
-      <th>incidenceRate</th>
-      <th>medIncome</th>
-      <th>popEst2015</th>
-      <th>povertyPercent</th>
-      <th>studyPerCap</th>
-      <th>MedianAge</th>
-      <th>MedianAgeMale</th>
-      <th>...</th>
-      <th>PctWhite</th>
-      <th>PctBlack</th>
-      <th>PctAsian</th>
-      <th>PctOtherRace</th>
-      <th>PctMarriedHouseholds</th>
-      <th>BirthRate</th>
-      <th>Target_div_Income</th>
-      <th>State</th>
-      <th>Target_div_LogIncome</th>
-      <th>isSoutheast</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1397.000000</td>
-      <td>469.0</td>
-      <td>164.9</td>
-      <td>489.800000</td>
-      <td>61898.0</td>
-      <td>260131.0</td>
-      <td>11.2</td>
-      <td>499.748204</td>
-      <td>39.3</td>
-      <td>36.9</td>
-      <td>...</td>
-      <td>81.780529</td>
-      <td>2.594728</td>
-      <td>4.821857</td>
-      <td>1.843479</td>
-      <td>52.856076</td>
-      <td>6.118831</td>
-      <td>0.002664</td>
-      <td>47.0</td>
-      <td>14.945742</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>173.000000</td>
-      <td>70.0</td>
-      <td>161.3</td>
-      <td>411.600000</td>
-      <td>48127.0</td>
-      <td>43269.0</td>
-      <td>18.6</td>
-      <td>23.111234</td>
-      <td>33.0</td>
-      <td>32.2</td>
-      <td>...</td>
-      <td>89.228509</td>
-      <td>0.969102</td>
-      <td>2.246233</td>
-      <td>3.741352</td>
-      <td>45.372500</td>
-      <td>4.333096</td>
-      <td>0.003352</td>
-      <td>47.0</td>
-      <td>14.960676</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>102.000000</td>
-      <td>50.0</td>
-      <td>174.7</td>
-      <td>349.700000</td>
-      <td>49348.0</td>
-      <td>21026.0</td>
-      <td>14.6</td>
-      <td>47.560164</td>
-      <td>45.0</td>
-      <td>44.0</td>
-      <td>...</td>
-      <td>90.922190</td>
-      <td>0.739673</td>
-      <td>0.465898</td>
-      <td>2.747358</td>
-      <td>54.444868</td>
-      <td>3.729488</td>
-      <td>0.003540</td>
-      <td>47.0</td>
-      <td>16.165968</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>427.000000</td>
-      <td>202.0</td>
-      <td>194.8</td>
-      <td>430.400000</td>
-      <td>44243.0</td>
-      <td>75882.0</td>
-      <td>17.1</td>
-      <td>342.637253</td>
-      <td>42.8</td>
-      <td>42.2</td>
-      <td>...</td>
-      <td>91.744686</td>
-      <td>0.782626</td>
-      <td>1.161359</td>
-      <td>1.362643</td>
-      <td>51.021514</td>
-      <td>4.603841</td>
-      <td>0.004403</td>
-      <td>47.0</td>
-      <td>18.209943</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>57.000000</td>
-      <td>26.0</td>
-      <td>144.4</td>
-      <td>350.100000</td>
-      <td>49955.0</td>
-      <td>10321.0</td>
-      <td>12.5</td>
-      <td>0.000000</td>
-      <td>48.3</td>
-      <td>47.8</td>
-      <td>...</td>
-      <td>94.104024</td>
-      <td>0.270192</td>
-      <td>0.665830</td>
-      <td>0.492135</td>
-      <td>54.027460</td>
-      <td>6.796657</td>
-      <td>0.002891</td>
-      <td>47.0</td>
-      <td>13.347040</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>3042</th>
-      <td>1962.667684</td>
-      <td>15.0</td>
-      <td>149.6</td>
-      <td>453.549422</td>
-      <td>46961.0</td>
-      <td>6343.0</td>
-      <td>12.4</td>
-      <td>0.000000</td>
-      <td>44.2</td>
-      <td>41.1</td>
-      <td>...</td>
-      <td>90.280811</td>
-      <td>3.837754</td>
-      <td>0.327613</td>
-      <td>1.700468</td>
-      <td>51.063830</td>
-      <td>7.773512</td>
-      <td>0.003186</td>
-      <td>16.0</td>
-      <td>13.907129</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3043</th>
-      <td>1962.667684</td>
-      <td>43.0</td>
-      <td>150.1</td>
-      <td>453.549422</td>
-      <td>48609.0</td>
-      <td>37118.0</td>
-      <td>18.8</td>
-      <td>377.175494</td>
-      <td>30.4</td>
-      <td>29.3</td>
-      <td>...</td>
-      <td>75.706245</td>
-      <td>2.326771</td>
-      <td>4.044920</td>
-      <td>14.130288</td>
-      <td>52.007937</td>
-      <td>8.186470</td>
-      <td>0.003088</td>
-      <td>16.0</td>
-      <td>13.909013</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3044</th>
-      <td>1962.667684</td>
-      <td>46.0</td>
-      <td>153.9</td>
-      <td>453.549422</td>
-      <td>51144.0</td>
-      <td>34536.0</td>
-      <td>15.0</td>
-      <td>1968.959926</td>
-      <td>30.9</td>
-      <td>30.5</td>
-      <td>...</td>
-      <td>87.961629</td>
-      <td>2.313188</td>
-      <td>1.316472</td>
-      <td>5.680705</td>
-      <td>55.153949</td>
-      <td>7.809192</td>
-      <td>0.003009</td>
-      <td>16.0</td>
-      <td>14.194274</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3045</th>
-      <td>1962.667684</td>
-      <td>52.0</td>
-      <td>175.0</td>
-      <td>453.549422</td>
-      <td>50745.0</td>
-      <td>25609.0</td>
-      <td>13.3</td>
-      <td>0.000000</td>
-      <td>39.0</td>
-      <td>36.9</td>
-      <td>...</td>
-      <td>92.905681</td>
-      <td>1.176562</td>
-      <td>0.244632</td>
-      <td>2.131790</td>
-      <td>58.484232</td>
-      <td>7.582938</td>
-      <td>0.003449</td>
-      <td>16.0</td>
-      <td>16.152005</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3046</th>
-      <td>1962.667684</td>
-      <td>48.0</td>
-      <td>213.6</td>
-      <td>453.549422</td>
-      <td>41193.0</td>
-      <td>37030.0</td>
-      <td>13.9</td>
-      <td>0.000000</td>
-      <td>26.2</td>
-      <td>25.5</td>
-      <td>...</td>
-      <td>70.098132</td>
-      <td>16.590100</td>
-      <td>3.177753</td>
-      <td>1.356457</td>
-      <td>56.040242</td>
-      <td>8.981723</td>
-      <td>0.005185</td>
-      <td>16.0</td>
-      <td>20.101593</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-<p>3047 rows × 35 columns</p>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
-
-<span class="n">y_lasso</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">]</span>
-<span class="n">x_lasso</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[[</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">,</span> <span class="s1">&#39;PctBlack&#39;</span><span class="p">,</span> <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;isSoutheast&#39;</span><span class="p">,</span><span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;PctPublicCoverageAlone&#39;</span><span class="p">,</span> <span class="s2">&quot;PctUnemployed16_Over&quot;</span><span class="p">]]</span>
-
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-                     <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span><span class="n">StandardScaler</span><span class="p">()),</span>
-                     <span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span><span class="n">Lasso</span><span class="p">())</span>
-<span class="p">])</span>
-
-<span class="n">search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span>
-                      <span class="p">{</span><span class="s1">&#39;model__alpha&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.01</span><span class="p">)},</span>
-                      <span class="n">cv</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;neg_mean_squared_error&quot;</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
-                      <span class="p">)</span>
-
-<span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_lasso</span><span class="p">,</span><span class="n">y_lasso</span><span class="p">)</span>
-<span class="n">search</span><span class="o">.</span><span class="n">best_params_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 990 candidates, totalling 4950 fits
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;model__alpha&#39;: 0.5199999999999998}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coefficients</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span>
-<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
-<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">,</span> <span class="s1">&#39;PctBlack&#39;</span><span class="p">,</span> <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;isSoutheast&#39;</span><span class="p">,</span><span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;PctPublicCoverageAlone&#39;</span><span class="p">,</span> <span class="s2">&quot;PctUnemployed16_Over&quot;</span><span class="p">]</span>
-<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">names</span><span class="p">)[</span><span class="n">importance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;povertyPercent&#39;, &#39;PctHS18_24&#39;, &#39;isSoutheast&#39;, &#39;PctPublicCoverage&#39;,
-       &#39;PctPublicCoverageAlone&#39;, &#39;PctUnemployed16_Over&#39;], dtype=&#39;&lt;U22&#39;)
-</pre></div>
-</div>
-</div>
-</div>
-<p>According to the Lasso results, <strong>PctBlack</strong> was eliminated, while <strong>PctPublicCoverage</strong>, <strong>PctHS18_24</strong>, <strong>PctPublicCoverageAlone</strong>, and <strong>PctUnemployed16_Over</strong> were admitted. Interpreting these results, it appears that for this data set, variables related to healthcare coverage and unemployment are better predictors of cancer mortality than the percentage of black residents. We don’t find this contradictory to prior literature cited that concludes a racial divide in cancer mortality, as not only does Lasso judge on prediction accuracy, but it’s more likely that these variables are correlated in some way, and the variables related to healthcare coverage and poverty are more comprehensive due to not segregating by race.</p>
+<p>According to the Lasso results, <strong>PctBlack</strong> was eliminated, while <strong>povertyPercent</strong>,<strong>PctPublicCoverage</strong>,<strong>isSoutheast</strong>, <strong>PctHS18_24</strong>, <strong>PctPublicCoverageAlone</strong>, <strong>PctUnemployed16_Over</strong> were selected as our final variables. Interpreting these results, it appears that for this data set, variables related to healthcare coverage and unemployment are better predictors of cancer mortality than the percentage of black residents. We don’t find this contradictory to prior literature cited that concludes a racial divide in cancer mortality, as not only does Lasso judge on prediction accuracy, but it’s more likely that these variables are correlated in some way, and the variables related to healthcare coverage and poverty are more comprehensive due to not segregating by race.</p>
 </section>
 <section id="coefficient-inference-using-the-bootstrap">
 <h1>Coefficient Inference using the Bootstrap<a class="headerlink" href="#coefficient-inference-using-the-bootstrap" title="Permalink to this heading">#</a></h1>
-<p>We apply a nonparametric bootstrap approach to determine the statistical significance of the various parameters involved in the imputed dataset. This will relax the assumptions of the linear modeling, specifically the assumption of normally distributed errors, and allow us to visualize the distributions of these coefficients.</p>
+<p>We applied a nonparametric bootstrap approach to determine the statistical significance of the various parameters involved in the imputed dataset. This will relax the assumptions of the linear modeling, specifically the assumption of normally distributed errors, and allow us to visualize the distributions of these coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">povertyPercent</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">PctHS18_24</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">isSoutheast</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">PctPublicCoverage</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">PctPublicCoverageAlone</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">PctUnemployed16_Over</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="n">bootparams</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">bootstrap_model</span><span class="p">(</span><span class="n">imputed_new</span><span class="p">)</span>
-    <span class="n">povertyPercent</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">PctHS18_24</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="n">isSoutheast</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
-    <span class="n">PctPublicCoverage</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
-    <span class="n">PctPublicCoverageAlone</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span>
-    <span class="n">PctUnemployed16_Over</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bootparams</span><span class="p">[</span><span class="mi">5</span><span class="p">]]</span>
-    
-<span class="n">orig_params</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The above code utilizes the function <code class="docutils literal notranslate"><span class="pre">bootstrap_model</span></code> from the ols module of the cancerolstools package, which conducts a nonparametric bootstrap on given data and extracts linear regression coefficients. We additionally locate the original parameters on the original sample for comparison.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#make df of results</span>
-
-<span class="n">bootdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">:</span> <span class="n">povertyPercent</span><span class="p">,</span>
-                       <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">:</span> <span class="n">PctHS18_24</span><span class="p">,</span>
-                       <span class="s1">&#39;isSoutheast&#39;</span><span class="p">:</span> <span class="n">isSoutheast</span><span class="p">,</span>
-                       <span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">:</span> <span class="n">PctPublicCoverage</span><span class="p">,</span>
-                       <span class="s1">&#39;PctPublicCoverageAlone&#39;</span><span class="p">:</span> <span class="n">PctPublicCoverageAlone</span><span class="p">,</span>
-                       <span class="s1">&#39;PctUnemployed16_Over&#39;</span><span class="p">:</span> <span class="n">PctUnemployed16_Over</span><span class="p">})</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot SBS hists of vars in df</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% CI&#39;</span><span class="p">)</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">97.5</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">orig_params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original estimate&#39;</span><span class="p">)</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mf">2.5</span><span class="o">/</span><span class="mi">6</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% CI with correction&#39;</span><span class="p">)</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">bootdf</span><span class="p">[</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="mi">100</span><span class="o">-</span><span class="p">(</span><span class="mf">2.5</span><span class="o">/</span><span class="mi">6</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">bootdf</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">bootdf</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-    
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;95</span><span class="si">% c</span><span class="s1">onfidence intervals for linear regression coefficients&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figures/Confidence_Interval_Hist.png&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;figures/Confidence_Interval_Hist.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f3836f5c3508ff22880ab5016747d25a84628b623f1d7bc3d98487ea2264b57d.png" src="_images/f3836f5c3508ff22880ab5016747d25a84628b623f1d7bc3d98487ea2264b57d.png" />
+<img alt="_images/b9842739d69ad0770dc9b707f98b55dfa504890e44054b805b6189f114c668aa.png" src="_images/b9842739d69ad0770dc9b707f98b55dfa504890e44054b805b6189f114c668aa.png" />
 </div>
 </div>
 <p>We employ a Bonferroni correction (in red) to account for the simultaneous construction of 6 confidence intervals and 6 hypothesis tests.</p>
@@ -1043,48 +421,6 @@ the imputation process. Using a random seed, we provide just 1 realization of th
 </section>
 <section id="variable-interpretation-conclusion">
 <h1>Variable Interpretation/Conclusion<a class="headerlink" href="#variable-interpretation-conclusion" title="Permalink to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">orig_params_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">orig_params_model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
-==============================================================================
-Dep. Variable:       TARGET_deathRate   R-squared:                       0.287
-Model:                            OLS   Adj. R-squared:                  0.285
-Method:                 Least Squares   F-statistic:                     203.5
-Date:                Thu, 11 May 2023   Prob (F-statistic):          1.15e-218
-Time:                        02:05:34   Log-Likelihood:                -13935.
-No. Observations:                3047   AIC:                         2.788e+04
-Df Residuals:                    3040   BIC:                         2.793e+04
-Df Model:                           6                                         
-Covariance Type:            nonrobust                                         
-==========================================================================================
-                             coef    std err          t      P&gt;|t|      [0.025      0.975]
-------------------------------------------------------------------------------------------
-Intercept                122.3032      2.484     49.234      0.000     117.433     127.174
-povertyPercent             0.5638      0.121      4.672      0.000       0.327       0.800
-PctHS18_24                 0.4931      0.050      9.922      0.000       0.396       0.591
-isSoutheast               11.6651      1.016     11.485      0.000       9.674      13.657
-PctPublicCoverage          0.2811      0.111      2.535      0.011       0.064       0.498
-PctPublicCoverageAlone     0.5704      0.183      3.123      0.002       0.212       0.929
-PctUnemployed16_Over       0.5630      0.173      3.253      0.001       0.224       0.902
-==============================================================================
-Omnibus:                      150.486   Durbin-Watson:                   1.579
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              514.948
-Skew:                          -0.109   Prob(JB):                    1.52e-112
-Kurtosis:                       5.002   Cond. No.                         341.
-==============================================================================
-
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-</pre></div>
-</div>
-</div>
-</div>
 <p>Based on the results of my modeling using Lasso regression and Bootstrap inference, we
 came to the following conclusions to the research question.</p>
 <p>For every percent increase of a county’s population in poverty, on average the cancer mortality per 100,000 residents in a county increases by approximately 0.563 individuals (CI: 0.2000-0.9467). For every percent increase of county residents ages 18-24 who’s highest education attained is a high school diploma, on average the cancer mortality per 100,000 residents increases by 0.4931 (CI: 0.3419-0.6497).</p>
@@ -1103,6 +439,14 @@ specific causes of such higher mortality rates. Additionally, based on the resul
 poverty were identified as significant predictors of cancer mortality, suggesting a few areas of
 focus to start research on. Overall, the results highlight the need for federal action to aid these
 Southeast communities, which in turn will reduce cancer mortality overall in the United States.</p>
+</section>
+<section id="author-credits">
+<h1>Author Credits<a class="headerlink" href="#author-credits" title="Permalink to this heading">#</a></h1>
+<p><strong>Brandon Rodriguez</strong>: Provided written material and figure ideas for Data Exploration, Data Visualization, and the Regression Analysis. Wrote the Introduction and Purpose of Analysis in the <code class="docutils literal notranslate"><span class="pre">Main.ipynb</span></code>. Decided which regression models to use and analyzed each model.</p>
+<p><strong>Noah Tran</strong>: Created <code class="docutils literal notranslate"><span class="pre">Regression-Analysis.ipynb</span></code> and the canceroltools utility functions and test suite (<code class="docutils literal notranslate"><span class="pre">ols.py</span></code>, <code class="docutils literal notranslate"><span class="pre">preprocess.py</span></code>, and <code class="docutils literal notranslate"><span class="pre">visuals.py</span></code>). Helped chose regression models and convert code for all regressions to be compatible in the notebooks.</p>
+<p><strong>Danielle Killeen</strong>: Created <code class="docutils literal notranslate"><span class="pre">Data-Visualization.ipynb</span></code> and converted code for all visualizations to be compatible in notebooks, created and the <code class="docutils literal notranslate"><span class="pre">_toc.yml</span></code>, <code class="docutils literal notranslate"><span class="pre">_config.yml</span></code>, and <code class="docutils literal notranslate"><span class="pre">book.yml</span></code> to build and continuously integrate the jupyter book. Also helped to summarize all of the information of the analyis notebooks into <code class="docutils literal notranslate"><span class="pre">Main.ipynb</span></code>.</p>
+<p><strong>Didi Duan</strong>: Created and finished <code class="docutils literal notranslate"><span class="pre">Data-Preparation.ipynb</span></code>, provided written material and code for the data preparation; Wrote the <code class="docutils literal notranslate"><span class="pre">environemnt.yml</span></code> and created the binder link, <code class="docutils literal notranslate"><span class="pre">README.md</span></code> and <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> for the repo.</p>
+<p><strong>Jiayi Qiu</strong>: Created the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and helped move text to make sense in <code class="docutils literal notranslate"><span class="pre">Main.ipynb</span></code>.</p>
 </section>
 <section id="sources-cited">
 <h1>Sources Cited<a class="headerlink" href="#sources-cited" title="Permalink to this heading">#</a></h1>
@@ -1174,10 +518,10 @@ Southeast communities, which in turn will reduce cancer mortality overall in the
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-motivations">Modeling Tool Motivations</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-assumptions">Modeling Tool Assumptions</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#author-credits">Author Credits</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
 </ul>
 
