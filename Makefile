@@ -20,12 +20,15 @@ html:
 ## all : Run all notebooks
 .PHONY : all
 all :
-	jupyter execute main.ipynb
+	jupyter execute Data-Preparation.ipynb
+    jupyter execute Data-Visualization.ipynb
+    jupyter execute Analysis.ipynb
+    jupyter execute main.ipynb
     # jupyter nbconvert --to notebook --execute main.ipynb -
     
 
 .PHONY : clean
-## clean: clean up the figures, audio and _build folders
+## clean: clean up the figures and _build folders
 clean: 
 	rm -rf figures/*
 	rm -rf _build/*
