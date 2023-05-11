@@ -19,7 +19,7 @@ You can run tests on the package using the command `pytest cancerolstools`.
 
 *Makefile support*
 
-TODO
+The makefile supports 5 operations: creating an environment, building JupyterBook, run all the notebooks, clean up the folders, and prints documentation.
 
 __Project structure__:
 
