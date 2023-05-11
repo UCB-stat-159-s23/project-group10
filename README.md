@@ -30,3 +30,11 @@ The notebook `Data-Preparation.ipynb` will provide the steps to preprocess and m
 The notebook `Data-Visualization.ipynb` will provide 2 different visualizations intended to guide the analysis. 
 
 The notebook `Regression-AnalysisV2.ipynb` is a Python adaptation of original code in R intended to run some linear regression techniques on the data. It will create a basic model, apply LASSO penalization, and also conduct the nonparametric bootstrap.
+
+`LICENSE` contains information on the license.
+
+`environment.yml` provides requirements to build the environment to replicate the results.
+
+`_config.yml`, `_toc.yml`, `requirements.txt` used for building the JupyterBook.
+
+`setup.cfg`, `setup.py`, `pyproj.toml` are files for the package `cancerolstools`.
