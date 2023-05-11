@@ -155,6 +155,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Data-Preparation.html">Data Preparation</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Analysis.html">Stat 159 Final Project</a></li>
+
+
+
+
+
 </ul>
 
     </div>
@@ -395,17 +401,7 @@ document.write(`
 <section id="coefficient-inference-using-the-bootstrap">
 <h1>Coefficient Inference using the Bootstrap<a class="headerlink" href="#coefficient-inference-using-the-bootstrap" title="Permalink to this heading">#</a></h1>
 <p>We applied a nonparametric bootstrap approach to determine the statistical significance of the various parameters involved in the imputed dataset. This will relax the assumptions of the linear modeling, specifically the assumption of normally distributed errors, and allow us to visualize the distributions of these coefficients.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;figures/Confidence_Interval_Hist.png&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/b9842739d69ad0770dc9b707f98b55dfa504890e44054b805b6189f114c668aa.png" src="_images/b9842739d69ad0770dc9b707f98b55dfa504890e44054b805b6189f114c668aa.png" />
-</div>
-</div>
+<p><img alt="image" src="_images/Confidence_Interval_Hist.png" /></p>
 <p>We employ a Bonferroni correction (in red) to account for the simultaneous construction of 6 confidence intervals and 6 hypothesis tests.</p>
 <p>From initial inspection, it’s clear that povertyPercent, PctHS18_24, and isSoutheastYes
 all reject the null hypothesis that the respective coefficient effect is actually 0. Upon inspecting
