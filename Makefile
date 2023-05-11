@@ -19,12 +19,11 @@ html:
     
 ## all : Run all notebooks
 .PHONY : all
-all :
+all:
 	jupyter execute Data-Preparation.ipynb
-    jupyter execute Data-Visualization.ipynb
-    jupyter execute Analysis.ipynb
-    jupyter execute main.ipynb
-    # jupyter nbconvert --to notebook --execute main.ipynb -
+	jupyter execute Data-Visualization.ipynb
+	jupyter execute Analysis.ipynb
+	jupyter execute Main.ipynb
     
 
 .PHONY : clean
