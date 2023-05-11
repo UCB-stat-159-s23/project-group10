@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Regression in Python &#8212; Cancer OLS Challenge Project Jupyter Book</title>
+    <title>Stat 159 Final Project &#8212; Cancer OLS Challenge Project Jupyter Book</title>
   
   
   
@@ -155,7 +155,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Data-Preparation.html">Data Preparation</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="Data-Visualization.html">Data Visualization</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Regression in Python</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Stat 159 Final Project</a></li>
+
+
+
+
 
 
 
@@ -343,7 +347,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Regression in Python</h1>
+    <h1>Stat 159 Final Project</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -353,11 +357,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regression in Python</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-preprocessing-the-data">Step 1: Preprocessing the Data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-feature-selection-using-lasso">Step 2: Feature Selection using LASSO</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-statistical-inference-using-nonparametric-bootstrap">Step 3: Statistical Inference using Nonparametric Bootstrap</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-conclusion-of-the-model">Step 4: Conclusion of the Model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Stat 159 Final Project</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-motivations">Modeling Tool Motivations</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-assumptions">Modeling Tool Assumptions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
 </ul>
 
             </nav>
@@ -370,8 +378,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="regression-in-python">
-<h1>Regression in Python<a class="headerlink" href="#regression-in-python" title="Permalink to this heading">#</a></h1>
+  <section id="stat-159-final-project">
+<h1>Stat 159 Final Project<a class="headerlink" href="#stat-159-final-project" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -392,8 +400,20 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="step-1-preprocessing-the-data">
-<h1>Step 1: Preprocessing the Data<a class="headerlink" href="#step-1-preprocessing-the-data" title="Permalink to this heading">#</a></h1>
+<section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
+<p>Cancer is a leading cause of mortality in the United States, and understanding the factors that affect cancer mortality can help the federal government as well as state governments effectively allocate capital and resources in the correct areas. Using data on Cancer mortality and its factors, we hope to answer the research question: what socioeconomic and/or geographic factors most affect cancer mortality rates, and to what extent? Using our dataset, consisting of both yearly values and multi-year averages from <a class="reference external" href="http://cancer.gov">cancer.gov</a>, the American Community Survey, and <a class="reference external" href="http://clinicaltrials.gov">clinicaltrials.gov</a>, the focus of our project is causal inference on variables such as age, gender, race/ethnicity, socioeconomic status, geographic location, and more. Due to the issues of non-normality and linearity found in data exploration, we decided to use modeling tools that did not rely on these assumptions. Additionally, we focused on modeling tools that created a more parsimonious model, focusing on picking out the most impactful variables in exchange for less prediction accuracy.</p>
+</section>
+<section id="modeling-tool-motivations">
+<h1>Modeling Tool Motivations<a class="headerlink" href="#modeling-tool-motivations" title="Permalink to this heading">#</a></h1>
+<p>Modeling was largely divided into two parts: feature selection and coefficient inference, and the modeling techniques used for each section were Lasso regression and Bootstrap confidence intervals, respectively. For feature selection, initial variables were chosen on the basis of domain knowledge and exploratory data analysis, constituting an initial model. Domain knowledge was also used to pick out a list of possibly important features, and then Lasso regression was used to create a final model. By using Lasso, we were able to effectively choose between a great deal of additional features, as well as eliminate any initial variables that were found to be unimportant. Additionally, by using the lambda value one standard error away from the minimum lambda value, we were able to obtain a far more sparse model than other methods. Finally, by using Bootstrap inference, we were able to not only obtain parameter inference without a normality assumption, but also help justify the use of imputation on missing values. By using these modeling techniques, we were able to create an answer to our research question that was focused on the most important features impacting cancer mortality, as well as without using improbable assumptions.</p>
+</section>
+<section id="modeling-tool-assumptions">
+<h1>Modeling Tool Assumptions<a class="headerlink" href="#modeling-tool-assumptions" title="Permalink to this heading">#</a></h1>
+<p>As mentioned prior, by using Lasso regression and Bootstrap inference, the assumptions I assumed about my model were homoskedasticity, linearity, and no excessive multicollinearity. I also am assuming that my sample is representative of the population.</p>
+</section>
+<section id="data-preprocessing">
+<h1>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h1>
 <p>In this step, we will utilize the cancerolstools preprocess module along with some functions from the ols module to clean the data and make it suitable for linear modeling. Namely, we will start by applying the preprocessing steps detailed in the Data Preparation phase, and then apply a convenient technique to convert the names of states into integers for later convenience in the project.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -506,48 +526,22 @@ the imputed dataset, assuming MAR.</p>
 </div>
 </div>
 </div>
+</section>
+<section id="feature-selection-using-lasso">
+<h1>Feature Selection Using LASSO<a class="headerlink" href="#feature-selection-using-lasso" title="Permalink to this heading">#</a></h1>
 <p>Initial variable selection for our model will be informed by domain knowledge and insight gained from prior visualization of the data.</p>
-<p>Literature on socioeconomic factors affecting cancer mortality point to poverty, education, and race as some of the most important factors. In the 2017 paper “Socioeconomic and Racial/Ethnic Disparities in Cancer Mortality, Incidence, and Survival in the United States, 1950–2014: Over Six Decades of Changing Patterns and Widening Inequalities,” the authors concluded that individuals in lower income and education groups had significantly higher mortality and incidence rates. The authors also noted that Blacks had significantly higher mortality and incidence rates than other races. In the 2021 paper “Leading cancers contributing to educational disparities in cancer mortality in the US, 2017,” the authors concluded that there was a significant difference between the mortality rate between individuals with a bachelors degree and higher, and all education levels below that. Since both these studies use data exclusively from the U.S., and are within the the time frame of interest to us, we are comfortable using these conclusions to guide our variable selection.</p>
-<p>The visualizations of our own data support these conclusions as well as suggest a categorical variable indicating whether a given county is in the Southwest region.</p>
-<p>Additionally, the conclusions from the second paper suggest two new variables, <strong>PctNoHS18_24</strong> and <strong>PctHS18_24</strong>, which represent thepercent of county residents ages 18-24 whose highest education attained is less than a high school degree, and then a high school degree, respectively. While there are several other variables related to educational goals, such as percentage of county residents ages 18-24 who have attained a bachelors, the literature above suggests that residents with lower educational achievements have a higher cancer mortality, while the opposite is not necessarily true.</p>
-<p>The variables for the initial model will be povertyPercent (Percent of populace in poverty), PctBlack, and PctNoHS18 and PctHS18_24. For future investigation we will consider isSouthEast (a categorical variable created later), as well as the variables related to healthcare coverage (<strong>PctPrivateCoverage, PctPrivateCoverageAlone, PctEmpPrivCoverage, PctPublicCoverage, PctPubliceCoverageAlone).</strong></p>
-<p>Firstly, let us examine the variables selected to see if any transformations would be appropriate.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imputed_new</span> <span class="o">=</span> <span class="n">imputed_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># create a copy of imputed</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> <span class="c1"># import the matplotlib library for plotting</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of imputed_new$povertyPercent&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;imputed_new$povertyPercent&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;PctBlack&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of imputed_new$povertyPercent&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;imputed_new$PctBlack&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;figures/Poverty_Percent_Hist.png&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/5d81c9abd8285f3df860cd7e9ef4629fac1de758c359e91647462113d0749ecc.png" src="_images/5d81c9abd8285f3df860cd7e9ef4629fac1de758c359e91647462113d0749ecc.png" />
-<img alt="_images/2e7335d298613a1deb24f51a9371522f2fc03dec25fb61ec9eefff8d918bfb68.png" src="_images/2e7335d298613a1deb24f51a9371522f2fc03dec25fb61ec9eefff8d918bfb68.png" />
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 640x480 with 0 Axes&gt;
-</pre></div>
-</div>
-</div>
-</div>
+<p>Literature on socioeconomic factors affecting cancer mortality point to poverty, education, and race as some of the most important factors. In the 2017 paper “Socioeconomic and Racial/Ethnic Disparities in Cancer Mortality, Incidence, and Survival in the United States, 1950–2014: Over Six Decades of Changing Patterns and Widening Inequalities,” the authors concluded that individuals in lower income and education groups had significantly higher mortality and incidence rates (Singh and Jemal). The authors also noted that Blacks had higher mortality and incidence rates than other races, likely due to the interconnection of race and income. In the 2021 paper “Leading cancers contributing to educational disparities in cancer mortality in the US, 2017,” the authors concluded that there was a significant difference between the mortality rate between individuals with a bachelors degree and higher, and all education levels below that (Withrow, D. R Et al.). Since both these studies use data exclusively from the U.S., and are within the time frame of interest to us, we decided to use these conclusions to guide our variable selection. Prior visualization of the data set supports these conclusions as well as suggest a categorical variable indicating whether a given county is in the Southwest region. To define which states belong to the Southeast, we used the regions specified by the Bureau of Economic Analysis, who divide the United States into 8 regions.</p>
+<p>Additionally, the conclusions from the second paper suggest a new variable related to education, <strong>PctHS18_24</strong> (Percent of county residents ages 18-24 highest education attained: high school diploma). While there are several other variables related to educational goals, such as percentage of county residents ages 18-24 who have attained a bachelors, the literature above suggests that residents with lower educational achievements tend to have a higher cancer mortality, while the opposite is not necessarily true. The variables for the initial model were thus <strong>povertyPercent</strong> (Percent of populace in poverty), <strong>PctBlack</strong> (Percent of county residents who identify as Black), and <strong>PctHS18_24</strong>.</p>
+<p>For future investigation we decided to consider <strong>isSouthEast</strong> (Categorical variable indicating whether the county is in the South East), as well as the variables related to healthcare coverage, <strong>PctPublicCoverage</strong> (Percent of county residents with government-provided health coverage) and <strong>PctPublicCoverageAlone</strong> (Percent of county residents with government-provided health coverage alone), and a more nuanced poverty variable <strong>PctUnemployed16_Over</strong> (Percent of county residents ages 16 and over unemployed).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="k">as</span> <span class="nn">lm</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
 <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+<span class="n">imputed_new</span> <span class="o">=</span> <span class="n">imputed_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;TARGET_deathRate ~ povertyPercent + PctBlack + PctNoHS18_24 + PctHS18_24&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;TARGET_deathRate ~ povertyPercent + PctBlack + PctHS18_24&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
@@ -557,28 +551,27 @@ the imputed dataset, assuming MAR.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
 ==============================================================================
-Dep. Variable:       TARGET_deathRate   R-squared:                       0.240
-Model:                            OLS   Adj. R-squared:                  0.239
-Method:                 Least Squares   F-statistic:                     240.4
-Date:                Wed, 10 May 2023   Prob (F-statistic):          1.39e-179
-Time:                        23:23:14   Log-Likelihood:                -14031.
-No. Observations:                3047   AIC:                         2.807e+04
-Df Residuals:                    3042   BIC:                         2.810e+04
-Df Model:                           4                                         
+Dep. Variable:       TARGET_deathRate   R-squared:                       0.238
+Model:                            OLS   Adj. R-squared:                  0.237
+Method:                 Least Squares   F-statistic:                     316.5
+Date:                Thu, 11 May 2023   Prob (F-statistic):          7.60e-179
+Time:                        02:02:58   Log-Likelihood:                -14035.
+No. Observations:                3047   AIC:                         2.808e+04
+Df Residuals:                    3043   BIC:                         2.810e+04
+Df Model:                           3                                         
 Covariance Type:            nonrobust                                         
 ==================================================================================
                      coef    std err          t      P&gt;|t|      [0.025      0.975]
 ----------------------------------------------------------------------------------
-Intercept        127.5873      2.110     60.481      0.000     123.451     131.724
-povertyPercent     1.6696      0.083     20.087      0.000       1.507       1.833
-PctBlack           0.1364      0.035      3.869      0.000       0.067       0.206
-PctNoHS18_24      -0.1734      0.057     -3.058      0.002      -0.285      -0.062
-PctHS18_24         0.7090      0.049     14.518      0.000       0.613       0.805
+Intercept        125.8083      2.030     61.960      0.000     121.827     129.790
+povertyPercent     1.6036      0.080     19.951      0.000       1.446       1.761
+PctBlack           0.1399      0.035      3.964      0.000       0.071       0.209
+PctHS18_24         0.7004      0.049     14.347      0.000       0.605       0.796
 ==============================================================================
-Omnibus:                      156.436   Durbin-Watson:                   1.569
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              507.276
-Skew:                          -0.170   Prob(JB):                    7.02e-111
-Kurtosis:                       4.970   Cond. No.                         217.
+Omnibus:                      161.459   Durbin-Watson:                   1.554
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              517.128
+Skew:                          -0.193   Prob(JB):                    5.09e-113
+Kurtosis:                       4.981   Cond. No.                         190.
 ==============================================================================
 
 Notes:
@@ -587,7 +580,7 @@ Notes:
 </div>
 </div>
 </div>
-<p>The initial fit is rather weak, with a R-squared of 0.24. Let us code and add isSoutheast as a categorical variable. To define which states belong to the Southeast, we will be using the regions specified by the Bureau of Economic Analysis, who divide the United States into 8 regions. Finally, we will use ANOVA to discern whether this suggested categorical variable is significant to our regression.</p>
+<p>The initial fit is rather weak, with a R-squared of 0.24. Let us code and add <strong>isSoutheast</strong> as a categorical variable. To add variables of interest, we used Lasso regression, a tool for constrained linear regression using cross-validation as a criteria, using the lowest cross-validation error alpha.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Southeast</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Alabama&quot;</span><span class="p">,</span> <span class="s2">&quot;Arkansas&quot;</span><span class="p">,</span> <span class="s2">&quot;Florida&quot;</span><span class="p">,</span> <span class="s2">&quot;Georgia&quot;</span><span class="p">,</span> <span class="s2">&quot;Kentucky&quot;</span><span class="p">,</span> <span class="s2">&quot;Louisiana&quot;</span><span class="p">,</span> <span class="s2">&quot;Mississippi&quot;</span><span class="p">,</span> <span class="s2">&quot;North Carolina&quot;</span><span class="p">,</span> <span class="s2">&quot;South Carolina&quot;</span><span class="p">,</span> <span class="s2">&quot;Tennessee&quot;</span><span class="p">,</span> <span class="s2">&quot;Virginia&quot;</span><span class="p">,</span> <span class="s2">&quot;West Virginia&quot;</span><span class="p">]</span>
@@ -923,113 +916,63 @@ Notes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model1</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;TARGET_deathRate ~ povertyPercent + PctBlack + PctNoHS18_24 + PctHS18_24 + isSoutheast&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span>
-<span class="n">result1</span> <span class="o">=</span> <span class="n">model1</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
-==============================================================================
-Dep. Variable:       TARGET_deathRate   R-squared:                       0.267
-Model:                            OLS   Adj. R-squared:                  0.266
-Method:                 Least Squares   F-statistic:                     221.6
-Date:                Wed, 10 May 2023   Prob (F-statistic):          4.65e-202
-Time:                        23:23:14   Log-Likelihood:                -13976.
-No. Observations:                3047   AIC:                         2.796e+04
-Df Residuals:                    3041   BIC:                         2.800e+04
-Df Model:                           5                                         
-Covariance Type:            nonrobust                                         
-==================================================================================
-                     coef    std err          t      P&gt;|t|      [0.025      0.975]
-----------------------------------------------------------------------------------
-Intercept        130.1146      2.086     62.374      0.000     126.024     134.205
-povertyPercent     1.4814      0.084     17.726      0.000       1.318       1.645
-PctBlack          -0.0416      0.039     -1.080      0.280      -0.117       0.034
-PctNoHS18_24      -0.1066      0.056     -1.902      0.057      -0.217       0.003
-PctHS18_24         0.6219      0.049     12.776      0.000       0.526       0.717
-isSoutheast       11.9612      1.133     10.556      0.000       9.739      14.183
-==============================================================================
-Omnibus:                      141.721   Durbin-Watson:                   1.604
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              433.480
-Skew:                          -0.154   Prob(JB):                     7.43e-95
-Kurtosis:                       4.822   Cond. No.                         219.
-==============================================================================
-
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="step-2-feature-selection-using-lasso">
-<h1>Step 2: Feature Selection using LASSO<a class="headerlink" href="#step-2-feature-selection-using-lasso" title="Permalink to this heading">#</a></h1>
-<p>To add variables of interest, we will be using Lasso regression using the minimum residual deviance Lambda value, which will be obtained using cross-validation.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LassoCV</span>
-
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">]</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[[</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">,</span> <span class="s1">&#39;PctBlack&#39;</span><span class="p">,</span> <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;PctNoHS18_24&#39;</span><span class="p">,</span> <span class="s1">&#39;isSoutheast&#39;</span><span class="p">,</span><span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">,</span>
+<span class="n">y_lasso</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[</span><span class="s1">&#39;TARGET_deathRate&#39;</span><span class="p">]</span>
+<span class="n">x_lasso</span> <span class="o">=</span> <span class="n">imputed_new</span><span class="p">[[</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">,</span> <span class="s1">&#39;PctBlack&#39;</span><span class="p">,</span> <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;isSoutheast&#39;</span><span class="p">,</span><span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;PctPublicCoverageAlone&#39;</span><span class="p">,</span> <span class="s2">&quot;PctUnemployed16_Over&quot;</span><span class="p">]]</span>
 
-<span class="n">modelcvalpha</span> <span class="o">=</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">alphas</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100000</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+                     <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span><span class="n">StandardScaler</span><span class="p">()),</span>
+                     <span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span><span class="n">Lasso</span><span class="p">())</span>
+<span class="p">])</span>
 
-<span class="n">alpha</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">modelcvalpha</span><span class="p">,</span> <span class="s1">&#39;alpha_&#39;</span><span class="p">)</span>
-<span class="n">alpha</span>
+<span class="n">search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s1">&#39;model__alpha&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.01</span><span class="p">)},</span>
+                      <span class="n">cv</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;neg_mean_squared_error&quot;</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+                      <span class="p">)</span>
+
+<span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_lasso</span><span class="p">,</span><span class="n">y_lasso</span><span class="p">)</span>
+<span class="n">search</span><span class="o">.</span><span class="n">best_params_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1036378151764025
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 990 candidates, totalling 4950 fits
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;model__alpha&#39;: 0.5199999999999998}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newmodel</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
-<span class="n">newmodel</span> <span class="o">=</span> <span class="n">newmodel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="n">coefs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newmodel</span><span class="p">,</span> <span class="s1">&#39;coef_&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;original alpha coefficients:&#39;</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
-
-<span class="n">med_penalty</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">med_penalty</span> <span class="o">=</span> <span class="n">med_penalty</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="n">coefs2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">med_penalty</span><span class="p">,</span> <span class="s1">&#39;coef_&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;medium penalty alpha coefficients:&#39;</span><span class="p">,</span> <span class="n">coefs2</span><span class="p">)</span>
-
-<span class="n">big_penalty</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">2.1288</span><span class="p">)</span>
-<span class="n">big_penalty</span> <span class="o">=</span> <span class="n">big_penalty</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="n">coefs3</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">big_penalty</span><span class="p">,</span> <span class="s1">&#39;coef_&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;large penalty alpha coefficients:&#39;</span><span class="p">,</span> <span class="n">coefs3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coefficients</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;povertyPercent&#39;</span><span class="p">,</span> <span class="s1">&#39;PctBlack&#39;</span><span class="p">,</span> <span class="s1">&#39;PctHS18_24&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;isSoutheast&#39;</span><span class="p">,</span><span class="s1">&#39;PctPublicCoverage&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;PctPublicCoverageAlone&#39;</span><span class="p">,</span> <span class="s2">&quot;PctUnemployed16_Over&quot;</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">names</span><span class="p">)[</span><span class="n">importance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>original alpha coefficients: [ 6.18181993e-01  6.51711241e-04  4.98726850e-01 -1.89012910e-01
-  1.07662463e+01  3.04999629e-01  6.05695117e-01  5.43496705e-01]
-medium penalty alpha coefficients: [ 0.68629493  0.09569364  0.53236952 -0.20267754  4.6051785   0.30719053
-  0.61788852  0.50146913]
-large penalty alpha coefficients: [ 0.73507278  0.1688434   0.5539995  -0.20376628  0.          0.30902248
-  0.62794433  0.43131725]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;povertyPercent&#39;, &#39;PctHS18_24&#39;, &#39;isSoutheast&#39;, &#39;PctPublicCoverage&#39;,
+       &#39;PctPublicCoverageAlone&#39;, &#39;PctUnemployed16_Over&#39;], dtype=&#39;&lt;U22&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-<p>Based on the result of the optimal LASSO regression using the alpha value of 0.103 that minimizes residual deviance using the LassoCV function, we observe that none of the coefficients are in fact regularized out of the model. In fact, even with an alpha hyperparameter of 10 times the optimal alpha value, still no covariates are removed from the model. From what we can see, it seems that the 2nd covariate, ‘PctBlack’, is the most close to 0 in both cases. We will investigate the statistical significance of these variables more closely in the following section, bootstrapping, but it is interesting to realize that even by applying the canonical LASSO method which should tend to regularize out covariates and give a more parsimonious model, we need to employ quite a larger hyperparameter to realize the effect of shrinkage.</p>
-<p>We note that in the original R analysis from which this project is based using the glmnet package, the lambda value that reaches 1 standard error away from the minimum is 2.1288. For comparison’s sake, we implement this alpha value as well to determine if shrinkage occurs. Indeed we see that the 5th covariate, ‘isSoutheast’, has been removed from the model as opposed to simply the covariate with the smallest magnitude.</p>
-<p>What we can determine from these results is ultimately sparse, as there was no consistent pattern seeing as only 1 coefficient was selected out of the model. While feature selection has indeed occurred using the larger alpha value, it is not certain to see that this necessarily generates the best model, or that the ‘isSoutheast’ is the worst feature. This motivates our second point of analysis, which relaxes the assumptions of linear modeling, which is the nonparametric bootstrap method of generating confidence intervals for different parameters.</p>
+<p>According to the Lasso results, <strong>PctBlack</strong> was eliminated, while <strong>PctPublicCoverage</strong>, <strong>PctHS18_24</strong>, <strong>PctPublicCoverageAlone</strong>, and <strong>PctUnemployed16_Over</strong> were admitted. Interpreting these results, it appears that for this data set, variables related to healthcare coverage and unemployment are better predictors of cancer mortality than the percentage of black residents. We don’t find this contradictory to prior literature cited that concludes a racial divide in cancer mortality, as not only does Lasso judge on prediction accuracy, but it’s more likely that these variables are correlated in some way, and the variables related to healthcare coverage and poverty are more comprehensive due to not segregating by race.</p>
 </section>
-<section id="step-3-statistical-inference-using-nonparametric-bootstrap">
-<h1>Step 3: Statistical Inference using Nonparametric Bootstrap<a class="headerlink" href="#step-3-statistical-inference-using-nonparametric-bootstrap" title="Permalink to this heading">#</a></h1>
+<section id="coefficient-inference-using-the-bootstrap">
+<h1>Coefficient Inference using the Bootstrap<a class="headerlink" href="#coefficient-inference-using-the-bootstrap" title="Permalink to this heading">#</a></h1>
 <p>We apply a nonparametric bootstrap approach to determine the statistical significance of the various parameters involved in the imputed dataset. This will relax the assumptions of the linear modeling, specifically the assumption of normally distributed errors, and allow us to visualize the distributions of these coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1091,7 +1034,7 @@ large penalty alpha coefficients: [ 0.73507278  0.1688434   0.5539995  -0.203766
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2b8c7882ef7ac9f431d91b6b30cefe283d90c7131fd414d441432b8f09652add.png" src="_images/2b8c7882ef7ac9f431d91b6b30cefe283d90c7131fd414d441432b8f09652add.png" />
+<img alt="_images/f3836f5c3508ff22880ab5016747d25a84628b623f1d7bc3d98487ea2264b57d.png" src="_images/f3836f5c3508ff22880ab5016747d25a84628b623f1d7bc3d98487ea2264b57d.png" />
 </div>
 </div>
 <p>We employ a Bonferroni correction (in red) to account for the simultaneous construction of 6 confidence intervals and 6 hypothesis tests.</p>
@@ -1107,8 +1050,8 @@ These conclusions of course are contingent on confidence level selected (0.05 wi
 Correction), the randomness of the Bootstrap (1000 replications), as well as the randomness of
 the imputation process. Using a random seed, we provide just 1 realization of the results.</p>
 </section>
-<section id="step-4-conclusion-of-the-model">
-<h1>Step 4: Conclusion of the Model<a class="headerlink" href="#step-4-conclusion-of-the-model" title="Permalink to this heading">#</a></h1>
+<section id="variable-interpretation-conclusion">
+<h1>Variable Interpretation/Conclusion<a class="headerlink" href="#variable-interpretation-conclusion" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">orig_params_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;TARGET_deathRate ~ povertyPercent + PctHS18_24 + isSoutheast + PctPublicCoverage + PctPublicCoverageAlone + PctUnemployed16_Over&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">imputed_new</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
@@ -1122,8 +1065,8 @@ the imputation process. Using a random seed, we provide just 1 realization of th
 Dep. Variable:       TARGET_deathRate   R-squared:                       0.287
 Model:                            OLS   Adj. R-squared:                  0.285
 Method:                 Least Squares   F-statistic:                     203.5
-Date:                Wed, 10 May 2023   Prob (F-statistic):          1.15e-218
-Time:                        23:23:31   Log-Likelihood:                -13935.
+Date:                Thu, 11 May 2023   Prob (F-statistic):          1.15e-218
+Time:                        02:05:34   Log-Likelihood:                -13935.
 No. Observations:                3047   AIC:                         2.788e+04
 Df Residuals:                    3040   BIC:                         2.793e+04
 Df Model:                           6                                         
@@ -1169,6 +1112,11 @@ specific causes of such higher mortality rates. Additionally, based on the resul
 poverty were identified as significant predictors of cancer mortality, suggesting a few areas of
 focus to start research on. Overall, the results highlight the need for federal action to aid these
 Southeast communities, which in turn will reduce cancer mortality overall in the United States.</p>
+</section>
+<section id="sources-cited">
+<h1>Sources Cited<a class="headerlink" href="#sources-cited" title="Permalink to this heading">#</a></h1>
+<p>Singh, G. K., &amp; Jemal, A. (2017). Socioeconomic and Racial/Ethnic Disparities in Cancer Mortality, Incidence, and    Survival in the United States, 1950-2014: Over Six Decades of Changing Patterns and Widening Inequalities. Journal of environmental and public health, 2017, 2819372. <a class="reference external" href="https://doi.org/10.1155/2017/2819372">https://doi.org/10.1155/2017/2819372</a></p>
+<p>Withrow, D. R., Freedman, N. D., Gibson, J. T., Yu, M., Nápoles, A. M., Berrington de González, A., &amp; Shiels, M. S. (2021). Leading cancers contributing to educational disparities in cancer mortality in the US, 2017. Cancer causes &amp; control : CCC, 32(11), 1193–1196. <a class="reference external" href="https://doi.org/10.1007/s10552-021-01471-9">https://doi.org/10.1007/s10552-021-01471-9</a></p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1229,11 +1177,15 @@ Southeast communities, which in turn will reduce cancer mortality overall in the
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regression in Python</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-preprocessing-the-data">Step 1: Preprocessing the Data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-feature-selection-using-lasso">Step 2: Feature Selection using LASSO</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-statistical-inference-using-nonparametric-bootstrap">Step 3: Statistical Inference using Nonparametric Bootstrap</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-conclusion-of-the-model">Step 4: Conclusion of the Model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Stat 159 Final Project</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-motivations">Modeling Tool Motivations</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-tool-assumptions">Modeling Tool Assumptions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-lasso">Feature Selection Using LASSO</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#coefficient-inference-using-the-bootstrap">Coefficient Inference using the Bootstrap</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-interpretation-conclusion">Variable Interpretation/Conclusion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-cited">Sources Cited</a></li>
 </ul>
 
   </nav></div>

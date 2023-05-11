@@ -9,24 +9,4 @@ __Binder Link__: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybind
 
 __GitHub Pages Link__: https://ucb-stat-159-s23.github.io/project-group10/Main.html
 
-__Instructions for replication__:
 
-*Install cancerolstools package*
-
-The custom package `cancerolstools` can be installed using `pip install .`
-
-You can run tests on the package using the command `pytest cancerolstools`.
-
-*Makefile support*
-
-TODO
-
-__Project structure__:
-
-The package `cancerolstools` contains 3 scripts. Each maps roughly to the functions required in each of the 3 following notebooks.
-
-The notebook `Data-Preparation.ipynb` will provide the steps to preprocess and merge the data, including a preliminary step to mapping the anomalies in the visualization.
-
-The notebook `Data-Visualization.ipynb` will provide 2 different visualizations intended to guide the analysis. 
-
-The notebook `Regression-AnalysisV2.ipynb` is a Python adaptation of original code in R intended to run some linear regression techniques on the data. It will create a basic model, apply LASSO penalization, and also conduct the nonparametric bootstrap.
