@@ -373,6 +373,17 @@ document.write(`
 <p>This repository is a comprehensive collection of our team’s work on exploring and analyzing the correlation between cancer-related death rates and socioeconomic indicators in the United States. Our main goal is to identify the most critical factors that contribute to cancer fatalities by using advanced statistical techniques and machine learning models. The datasets we use in this repository cited from the   public-access data website data.world: <a class="reference external" href="https://data.world/nrippner/ols-regression-challenge">https://data.world/nrippner/ols-regression-challenge</a>.</p>
 <p><strong>Binder Link</strong>: <a class="reference external" href="https://mybinder.org/v2/gh/UCB-stat-159-s23/project-group10.git/HEAD?labpath=Main.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <p><strong>GitHub Pages Link</strong>: <a class="reference external" href="https://ucb-stat-159-s23.github.io/project-group10/Main.html">https://ucb-stat-159-s23.github.io/project-group10/Main.html</a></p>
+<p><strong>Instructions for replication</strong>:
+<em>Install cancerolstools package</em></p>
+<p>The custom package <code class="docutils literal notranslate"><span class="pre">cancerolstools</span></code> can be installed using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code></p>
+<p>You can run tests on the package using the command <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">cancerolstools</span></code>.</p>
+<p><em>Makefile support</em>
+TODO</p>
+<p><strong>Project structure</strong>:
+The package <code class="docutils literal notranslate"><span class="pre">cancerolstools</span></code> contains 3 scripts. Each maps roughly to the functions required in each of the 3 following notebooks.</p>
+<p>The notebook <code class="docutils literal notranslate"><span class="pre">Data-Preparation.ipynb</span></code> will provide the steps to preprocess and merge the data, including a preliminary step to mapping the anomalies in the visualization.</p>
+<p>The notebook <code class="docutils literal notranslate"><span class="pre">Data-Visualization.ipynb</span></code> will provide 2 different visualizations intended to guide the analysis.</p>
+<p>The notebook <code class="docutils literal notranslate"><span class="pre">Regression-AnalysisV2.ipynb</span></code> is a Python adaptation of original code in R intended to run some linear regression techniques on the data. It will create a basic model, apply LASSO penalization, and also conduct the nonparametric bootstrap.</p>
 </section>
 </section>
 
